@@ -9,13 +9,41 @@
 /* Begin PBXBuildFile section */
 		A33BA0F31EC80A7A001C143D /* GSRefresh.h in Headers */ = {isa = PBXBuildFile; fileRef = A33BA0F11EC80A7A001C143D /* GSRefresh.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A33BA11C1EC84E50001C143D /* GSRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33BA11B1EC84E50001C143D /* GSRefresh.swift */; };
+		A39426FA1ED0323D00914352 /* RefreshManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426F91ED0323D00914352 /* RefreshManager.swift */; };
+		A39426FC1ED0324800914352 /* LoadMoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426FB1ED0324800914352 /* LoadMoreManager.swift */; };
+		A39426FE1ED033AF00914352 /* ScrollViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426FD1ED033AF00914352 /* ScrollViewObserver.swift */; };
+		A39427001ED0345B00914352 /* UIScrollView+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426FF1ED0345B00914352 /* UIScrollView+Refresh.swift */; };
+		A39427021ED0347100914352 /* UIScrollView+LoadMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39427011ED0347100914352 /* UIScrollView+LoadMore.swift */; };
+		A394270C1ED0353400914352 /* GSRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A33BA0E21EC7FCEA001C143D /* GSRefresh.framework */; };
+		A39427151ED0357D00914352 /* GSRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39427131ED0357D00914352 /* GSRefreshTests.swift */; };
+		A39427161ED0357D00914352 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A39427141ED0357D00914352 /* Info.plist */; };
+		A39427181ED036CE00914352 /* RefreshManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39427171ED036CE00914352 /* RefreshManagerTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A394270D1ED0353400914352 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A33BA0D91EC7FCEA001C143D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A33BA0E11EC7FCEA001C143D;
+			remoteInfo = GSRefresh;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		A33BA0E21EC7FCEA001C143D /* GSRefresh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GSRefresh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A33BA0F11EC80A7A001C143D /* GSRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSRefresh.h; sourceTree = "<group>"; };
 		A33BA0F21EC80A7A001C143D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A33BA11B1EC84E50001C143D /* GSRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSRefresh.swift; sourceTree = "<group>"; };
+		A39426F91ED0323D00914352 /* RefreshManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshManager.swift; sourceTree = "<group>"; };
+		A39426FB1ED0324800914352 /* LoadMoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreManager.swift; sourceTree = "<group>"; };
+		A39426FD1ED033AF00914352 /* ScrollViewObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViewObserver.swift; sourceTree = "<group>"; };
+		A39426FF1ED0345B00914352 /* UIScrollView+Refresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Refresh.swift"; sourceTree = "<group>"; };
+		A39427011ED0347100914352 /* UIScrollView+LoadMore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+LoadMore.swift"; sourceTree = "<group>"; };
+		A39427071ED0353400914352 /* GSRefreshTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GSRefreshTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A39427131ED0357D00914352 /* GSRefreshTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSRefreshTests.swift; sourceTree = "<group>"; };
+		A39427141ED0357D00914352 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A39427171ED036CE00914352 /* RefreshManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +54,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A39427041ED0353400914352 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A394270C1ED0353400914352 /* GSRefresh.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -33,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				A33BA0F01EC80A7A001C143D /* Sources */,
+				A39427121ED0357D00914352 /* Tests */,
 				A33BA0E31EC7FCEA001C143D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				A33BA0E21EC7FCEA001C143D /* GSRefresh.framework */,
+				A39427071ED0353400914352 /* GSRefreshTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,11 +86,26 @@
 		A33BA0F01EC80A7A001C143D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				A33BA0F11EC80A7A001C143D /* GSRefresh.h */,
-				A33BA0F21EC80A7A001C143D /* Info.plist */,
 				A33BA11B1EC84E50001C143D /* GSRefresh.swift */,
+				A39426F91ED0323D00914352 /* RefreshManager.swift */,
+				A39426FB1ED0324800914352 /* LoadMoreManager.swift */,
+				A39426FD1ED033AF00914352 /* ScrollViewObserver.swift */,
+				A39426FF1ED0345B00914352 /* UIScrollView+Refresh.swift */,
+				A39427011ED0347100914352 /* UIScrollView+LoadMore.swift */,
+				A33BA0F21EC80A7A001C143D /* Info.plist */,
+				A33BA0F11EC80A7A001C143D /* GSRefresh.h */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		A39427121ED0357D00914352 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A39427131ED0357D00914352 /* GSRefreshTests.swift */,
+				A39427171ED036CE00914352 /* RefreshManagerTests.swift */,
+				A39427141ED0357D00914352 /* Info.plist */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,18 +140,42 @@
 			productReference = A33BA0E21EC7FCEA001C143D /* GSRefresh.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		A39427061ED0353400914352 /* GSRefreshTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A394270F1ED0353400914352 /* Build configuration list for PBXNativeTarget "GSRefreshTests" */;
+			buildPhases = (
+				A39427031ED0353400914352 /* Sources */,
+				A39427041ED0353400914352 /* Frameworks */,
+				A39427051ED0353400914352 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A394270E1ED0353400914352 /* PBXTargetDependency */,
+			);
+			name = GSRefreshTests;
+			productName = GSRefreshTests;
+			productReference = A39427071ED0353400914352 /* GSRefreshTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		A33BA0D91EC7FCEA001C143D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = GeSen;
 				TargetAttributes = {
 					A33BA0E11EC7FCEA001C143D = {
 						CreatedOnToolsVersion = 8.3.2;
 						LastSwiftMigration = 0830;
+						ProvisioningStyle = Automatic;
+					};
+					A39427061ED0353400914352 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = DBTR8NXFB4;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -116,6 +193,7 @@
 			projectRoot = "";
 			targets = (
 				A33BA0E11EC7FCEA001C143D /* GSRefresh */,
+				A39427061ED0353400914352 /* GSRefreshTests */,
 			);
 		};
 /* End PBXProject section */
@@ -128,6 +206,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A39427051ED0353400914352 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A39427161ED0357D00914352 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -136,10 +222,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				A33BA11C1EC84E50001C143D /* GSRefresh.swift in Sources */,
+				A39427001ED0345B00914352 /* UIScrollView+Refresh.swift in Sources */,
+				A39426FC1ED0324800914352 /* LoadMoreManager.swift in Sources */,
+				A39426FA1ED0323D00914352 /* RefreshManager.swift in Sources */,
+				A39427021ED0347100914352 /* UIScrollView+LoadMore.swift in Sources */,
+				A39426FE1ED033AF00914352 /* ScrollViewObserver.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A39427031ED0353400914352 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A39427151ED0357D00914352 /* GSRefreshTests.swift in Sources */,
+				A39427181ED036CE00914352 /* RefreshManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A394270E1ED0353400914352 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A33BA0E11EC7FCEA001C143D /* GSRefresh */;
+			targetProxy = A394270D1ED0353400914352 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A33BA0E81EC7FCEA001C143D /* Debug */ = {
@@ -282,6 +390,30 @@
 			};
 			name = Release;
 		};
+		A39427101ED0353400914352 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = DBTR8NXFB4;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.gesen.GSRefreshTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		A39427111ED0353400914352 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = DBTR8NXFB4;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.gesen.GSRefreshTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -302,6 +434,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		A394270F1ED0353400914352 /* Build configuration list for PBXNativeTarget "GSRefreshTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A39427101ED0353400914352 /* Debug */,
+				A39427111ED0353400914352 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

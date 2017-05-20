@@ -112,7 +112,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0830;
-				ORGANIZATIONNAME = GeSen;
+				ORGANIZATIONNAME = "GeSen <i@gesen.me>";
 				TargetAttributes = {
 					A33BA0FD1EC81389001C143D = {
 						CreatedOnToolsVersion = 8.3.2;
