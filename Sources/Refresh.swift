@@ -1,8 +1,8 @@
 //
-//  GSRefresh.h
+//  Refresh.swift
 //  GSRefresh
 //
-//  Created by Gesen on 2017/5/14.
+//  Created by GeSen on 2017/5/20.
 //
 //  Copyright © 2017 GeSen <i@gesen.me>
 //
@@ -24,14 +24,54 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#import <UIKit/UIKit.h>
+import Foundation
 
-//! Project version number for GSRefresh.
-FOUNDATION_EXPORT double GSRefreshVersionNumber;
-
-//! Project version string for GSRefresh.
-FOUNDATION_EXPORT const unsigned char GSRefreshVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <GSRefresh/PublicHeader.h>
-
-
+public class Refresh: Observer {
+    
+    public enum State {
+        case `default`
+        case pulling
+        case refreshing
+    }
+    
+    // MARK: -
+    
+    public internal(set) var state: State
+    
+    // MARK: -
+    
+    override init(scrollView: UIScrollView) {
+        self.state = .default
+        super.init(scrollView: scrollView)
+        setupObserver()
+    }
+    
+    // MARK: -
+    
+    public func begin() {
+        state = .refreshing
+    }
+    
+    public func end() {
+        state = .default
+    }
+    
+    // MARK: - 
+    
+    private func setupObserver() {
+        
+        didScroll = { scrollView, oldValue, newValue in
+            
+        }
+        
+        didLayout = { scrollView, oldValue, newValue in
+            
+        }
+        
+        didDraging = { scrollView, oldValue, newValue in
+            
+        }
+        
+    }
+    
+}

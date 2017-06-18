@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A3124ABA1EF655D80061C1BB /* GSRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3124AB71EF655BA0061C1BB /* GSRefresh.framework */; };
+		A3124ABB1EF655D80061C1BB /* GSRefresh.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A3124AB71EF655BA0061C1BB /* GSRefresh.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A33BA1021EC81389001C143D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33BA1011EC81389001C143D /* AppDelegate.swift */; };
 		A33BA1041EC81389001C143D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33BA1031EC81389001C143D /* ViewController.swift */; };
 		A33BA1071EC81389001C143D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A33BA1051EC81389001C143D /* Main.storyboard */; };
@@ -15,16 +17,45 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A33BA1181EC8224C001C143D /* PBXContainerItemProxy */ = {
+		A3124AB61EF655BA0061C1BB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A33BA1141EC8224B001C143D /* GSRefresh.xcodeproj */;
+			containerPortal = A3124AB11EF655BA0061C1BB /* GSRefresh.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = A33BA0E21EC7FCEA001C143D;
 			remoteInfo = GSRefresh;
 		};
+		A3124AB81EF655BA0061C1BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A3124AB11EF655BA0061C1BB /* GSRefresh.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A39427071ED0353400914352;
+			remoteInfo = GSRefreshTests;
+		};
+		A3124ABC1EF655D80061C1BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A3124AB11EF655BA0061C1BB /* GSRefresh.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A33BA0E11EC7FCEA001C143D;
+			remoteInfo = GSRefresh;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A3124AB01EF655A50061C1BB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A3124ABB1EF655D80061C1BB /* GSRefresh.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		A3124AB11EF655BA0061C1BB /* GSRefresh.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GSRefresh.xcodeproj; path = ../GSRefresh.xcodeproj; sourceTree = "<group>"; };
 		A33BA0FE1EC81389001C143D /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A33BA1011EC81389001C143D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A33BA1031EC81389001C143D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -32,7 +63,6 @@
 		A33BA1081EC81389001C143D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A33BA10B1EC81389001C143D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A33BA10D1EC81389001C143D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A33BA1141EC8224B001C143D /* GSRefresh.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GSRefresh.xcodeproj; path = ../GSRefresh.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,16 +70,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3124ABA1EF655D80061C1BB /* GSRefresh.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A3124AB21EF655BA0061C1BB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A3124AB71EF655BA0061C1BB /* GSRefresh.framework */,
+				A3124AB91EF655BA0061C1BB /* GSRefreshTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A33BA0F51EC81389001C143D = {
 			isa = PBXGroup;
 			children = (
-				A33BA1141EC8224B001C143D /* GSRefresh.xcodeproj */,
+				A3124AB11EF655BA0061C1BB /* GSRefresh.xcodeproj */,
 				A33BA1001EC81389001C143D /* Example */,
 				A33BA0FF1EC81389001C143D /* Products */,
 			);
@@ -76,14 +116,6 @@
 			path = Example;
 			sourceTree = "<group>";
 		};
-		A33BA1151EC8224B001C143D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A33BA1191EC8224C001C143D /* GSRefresh.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -94,10 +126,12 @@
 				A33BA0FA1EC81389001C143D /* Sources */,
 				A33BA0FB1EC81389001C143D /* Frameworks */,
 				A33BA0FC1EC81389001C143D /* Resources */,
+				A3124AB01EF655A50061C1BB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A3124ABD1EF655D80061C1BB /* PBXTargetDependency */,
 			);
 			name = Example;
 			productName = Example;
@@ -133,8 +167,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = A33BA1151EC8224B001C143D /* Products */;
-					ProjectRef = A33BA1141EC8224B001C143D /* GSRefresh.xcodeproj */;
+					ProductGroup = A3124AB21EF655BA0061C1BB /* Products */;
+					ProjectRef = A3124AB11EF655BA0061C1BB /* GSRefresh.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -145,11 +179,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		A33BA1191EC8224C001C143D /* GSRefresh.framework */ = {
+		A3124AB71EF655BA0061C1BB /* GSRefresh.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = GSRefresh.framework;
-			remoteRef = A33BA1181EC8224C001C143D /* PBXContainerItemProxy */;
+			remoteRef = A3124AB61EF655BA0061C1BB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A3124AB91EF655BA0061C1BB /* GSRefreshTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GSRefreshTests.xctest;
+			remoteRef = A3124AB81EF655BA0061C1BB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -178,6 +219,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A3124ABD1EF655D80061C1BB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GSRefresh;
+			targetProxy = A3124ABC1EF655D80061C1BB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A33BA1051EC81389001C143D /* Main.storyboard */ = {
@@ -295,6 +344,7 @@
 		A33BA1111EC81389001C143D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -307,7 +357,9 @@
 		A33BA1121EC81389001C143D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.gesen.Example;

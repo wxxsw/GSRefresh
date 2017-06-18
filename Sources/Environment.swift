@@ -1,8 +1,8 @@
 //
-//  GSRefresh.h
-//  GSRefresh
+//  Environment.swift
+//  Environment
 //
-//  Created by Gesen on 2017/5/14.
+//  Created by GeSen on 2017/5/14.
 //
 //  Copyright © 2017 GeSen <i@gesen.me>
 //
@@ -24,14 +24,10 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#import <UIKit/UIKit.h>
+typealias Offset = CGPoint
+typealias Size = CGSize
+typealias DragState = UIGestureRecognizerState
 
-//! Project version number for GSRefresh.
-FOUNDATION_EXPORT double GSRefreshVersionNumber;
-
-//! Project version string for GSRefresh.
-FOUNDATION_EXPORT const unsigned char GSRefreshVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <GSRefresh/PublicHeader.h>
-
-
+typealias DidScroll = (UIScrollView, _ old: Offset, _ new: Offset) -> ()
+typealias DidLayout = (UIScrollView, _ old: Size, _ new: Size) -> ()
+typealias DidDraging = (UIScrollView, _ old: DragState, _ new: DragState) -> ()

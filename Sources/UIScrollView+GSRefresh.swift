@@ -1,8 +1,8 @@
 //
-//  GSRefresh.h
+//  UIScrollView+GSRefresh.swift
 //  GSRefresh
 //
-//  Created by Gesen on 2017/5/14.
+//  Created by GeSen on 2017/6/12.
 //
 //  Copyright © 2017 GeSen <i@gesen.me>
 //
@@ -24,14 +24,29 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-#import <UIKit/UIKit.h>
+import Foundation
 
-//! Project version number for GSRefresh.
-FOUNDATION_EXPORT double GSRefreshVersionNumber;
+public extension UIScrollView {
+    
+    public var refresh: Refresh {
+        guard let refresh = objc_getAssociatedObject(self, &refreshKey) as? Refresh else {
+            let newRefresh = Refresh(scrollView: self)
+            objc_setAssociatedObject(self, &refreshKey, newRefresh, .OBJC_ASSOCIATION_RETAIN)
+            return newRefresh
+        }
+        return refresh
+    }
+    
+    public var loadMore: LoadMore {
+        guard let loadMore = objc_getAssociatedObject(self, &loadMoreKey) as? LoadMore else {
+            let newLoadMore = LoadMore(scrollView: self)
+            objc_setAssociatedObject(self, &loadMoreKey, newLoadMore, .OBJC_ASSOCIATION_RETAIN)
+            return newLoadMore
+        }
+        return loadMore
+    }
+    
+}
 
-//! Project version string for GSRefresh.
-FOUNDATION_EXPORT const unsigned char GSRefreshVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <GSRefresh/PublicHeader.h>
-
-
+private var refreshKey: Void?
+private var loadMoreKey: Void?

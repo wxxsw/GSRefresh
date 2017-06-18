@@ -1,8 +1,8 @@
 //
-//  GSRefresh.swift
+//  LoadMore.swift
 //  GSRefresh
 //
-//  Created by GeSen on 2017/5/14.
+//  Created by GeSen on 2017/5/20.
 //
 //  Copyright © 2017 GeSen <i@gesen.me>
 //
@@ -24,31 +24,30 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-public struct GSRefresh<Base> {
-    public let base: Base
-    public init(_ base: Base) {
-        self.base = base
+import Foundation
+
+public class LoadMore: Observer {
+    
+    public enum State {
+        case `default`
+        case pulling
+        case refreshing
+        case noMore
     }
-}
-
-public protocol RefreshCompatible {
-    associatedtype CompatibleType
-    var refresh: CompatibleType { get }
-}
-
-public extension RefreshCompatible {
-    public var refresh: GSRefresh<Self> {
-        get { return GSRefresh(self) }
+    
+    public internal(set) var state: State
+    
+    override init(scrollView: UIScrollView) {
+        self.state = .default
+        super.init(scrollView: scrollView)
     }
-}
-
-public protocol LoadMoreCompatible {
-    associatedtype CompatibleType
-    var loadMore: CompatibleType { get }
-}
-
-public extension LoadMoreCompatible {
-    public var loadMore: GSRefresh<Self> {
-        get { return GSRefresh(self) }
+    
+    public func begin() {
+        
     }
+    
+    public func end() {
+        
+    }
+    
 }

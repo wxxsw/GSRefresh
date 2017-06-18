@@ -1,18 +1,23 @@
 //
-//  GSRefreshTests.swift
-//  GSRefreshTests
+//  LoadMoreTests.swift
+//  GSRefresh
 //
-//  Created by GeSen on 2017/5/20.
+//  Created by GeSen on 2017/6/18.
 //  Copyright © 2017年 GeSen. All rights reserved.
 //
 
 import XCTest
+@testable import GSRefresh
 
-class GSRefreshTests: XCTestCase {
+class LoadMoreTests: XCTestCase {
+    
+    var scrollView: UIScrollView!
+    var loadMore: LoadMore!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        scrollView = UIScrollView()
+        loadMore = LoadMore(scrollView: scrollView)
     }
     
     override func tearDown() {

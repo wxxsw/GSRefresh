@@ -7,17 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A3031DEA1EEE97BE00599066 /* UIScrollView+GSRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3031DE91EEE97BE00599066 /* UIScrollView+GSRefresh.swift */; };
+		A3124ABF1EF6579E0061C1BB /* LoadMoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3124ABE1EF6579E0061C1BB /* LoadMoreTests.swift */; };
+		A3124AC11EF657C60061C1BB /* ObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3124AC01EF657C60061C1BB /* ObserverTests.swift */; };
+		A3124AC31EF657ED0061C1BB /* UIScrollView+GSRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3124AC21EF657ED0061C1BB /* UIScrollView+GSRefreshTests.swift */; };
+		A3124AC51EF663C70061C1BB /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3124AC41EF663C70061C1BB /* Environment.swift */; };
 		A33BA0F31EC80A7A001C143D /* GSRefresh.h in Headers */ = {isa = PBXBuildFile; fileRef = A33BA0F11EC80A7A001C143D /* GSRefresh.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A33BA11C1EC84E50001C143D /* GSRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33BA11B1EC84E50001C143D /* GSRefresh.swift */; };
-		A39426FA1ED0323D00914352 /* RefreshManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426F91ED0323D00914352 /* RefreshManager.swift */; };
-		A39426FC1ED0324800914352 /* LoadMoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426FB1ED0324800914352 /* LoadMoreManager.swift */; };
-		A39426FE1ED033AF00914352 /* ScrollViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426FD1ED033AF00914352 /* ScrollViewObserver.swift */; };
-		A39427001ED0345B00914352 /* UIScrollView+Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426FF1ED0345B00914352 /* UIScrollView+Refresh.swift */; };
-		A39427021ED0347100914352 /* UIScrollView+LoadMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39427011ED0347100914352 /* UIScrollView+LoadMore.swift */; };
+		A39426FA1ED0323D00914352 /* Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426F91ED0323D00914352 /* Refresh.swift */; };
+		A39426FC1ED0324800914352 /* LoadMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426FB1ED0324800914352 /* LoadMore.swift */; };
+		A39426FE1ED033AF00914352 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426FD1ED033AF00914352 /* Observer.swift */; };
 		A394270C1ED0353400914352 /* GSRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A33BA0E21EC7FCEA001C143D /* GSRefresh.framework */; };
-		A39427151ED0357D00914352 /* GSRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39427131ED0357D00914352 /* GSRefreshTests.swift */; };
-		A39427161ED0357D00914352 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A39427141ED0357D00914352 /* Info.plist */; };
-		A39427181ED036CE00914352 /* RefreshManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39427171ED036CE00914352 /* RefreshManagerTests.swift */; };
+		A39427181ED036CE00914352 /* RefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39427171ED036CE00914352 /* RefreshTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,19 +31,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A3031DE91EEE97BE00599066 /* UIScrollView+GSRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+GSRefresh.swift"; sourceTree = "<group>"; };
+		A3124ABE1EF6579E0061C1BB /* LoadMoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreTests.swift; sourceTree = "<group>"; };
+		A3124AC01EF657C60061C1BB /* ObserverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverTests.swift; sourceTree = "<group>"; };
+		A3124AC21EF657ED0061C1BB /* UIScrollView+GSRefreshTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+GSRefreshTests.swift"; sourceTree = "<group>"; };
+		A3124AC41EF663C70061C1BB /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		A33BA0E21EC7FCEA001C143D /* GSRefresh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GSRefresh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A33BA0F11EC80A7A001C143D /* GSRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSRefresh.h; sourceTree = "<group>"; };
 		A33BA0F21EC80A7A001C143D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A33BA11B1EC84E50001C143D /* GSRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSRefresh.swift; sourceTree = "<group>"; };
-		A39426F91ED0323D00914352 /* RefreshManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshManager.swift; sourceTree = "<group>"; };
-		A39426FB1ED0324800914352 /* LoadMoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreManager.swift; sourceTree = "<group>"; };
-		A39426FD1ED033AF00914352 /* ScrollViewObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViewObserver.swift; sourceTree = "<group>"; };
-		A39426FF1ED0345B00914352 /* UIScrollView+Refresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Refresh.swift"; sourceTree = "<group>"; };
-		A39427011ED0347100914352 /* UIScrollView+LoadMore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+LoadMore.swift"; sourceTree = "<group>"; };
+		A39426F91ED0323D00914352 /* Refresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Refresh.swift; sourceTree = "<group>"; };
+		A39426FB1ED0324800914352 /* LoadMore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMore.swift; sourceTree = "<group>"; };
+		A39426FD1ED033AF00914352 /* Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		A39427071ED0353400914352 /* GSRefreshTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GSRefreshTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A39427131ED0357D00914352 /* GSRefreshTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GSRefreshTests.swift; sourceTree = "<group>"; };
 		A39427141ED0357D00914352 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A39427171ED036CE00914352 /* RefreshManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshManagerTests.swift; sourceTree = "<group>"; };
+		A39427171ED036CE00914352 /* RefreshTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,12 +87,11 @@
 		A33BA0F01EC80A7A001C143D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				A33BA11B1EC84E50001C143D /* GSRefresh.swift */,
-				A39426F91ED0323D00914352 /* RefreshManager.swift */,
-				A39426FB1ED0324800914352 /* LoadMoreManager.swift */,
-				A39426FD1ED033AF00914352 /* ScrollViewObserver.swift */,
-				A39426FF1ED0345B00914352 /* UIScrollView+Refresh.swift */,
-				A39427011ED0347100914352 /* UIScrollView+LoadMore.swift */,
+				A3124AC41EF663C70061C1BB /* Environment.swift */,
+				A39426F91ED0323D00914352 /* Refresh.swift */,
+				A39426FB1ED0324800914352 /* LoadMore.swift */,
+				A39426FD1ED033AF00914352 /* Observer.swift */,
+				A3031DE91EEE97BE00599066 /* UIScrollView+GSRefresh.swift */,
 				A33BA0F21EC80A7A001C143D /* Info.plist */,
 				A33BA0F11EC80A7A001C143D /* GSRefresh.h */,
 			);
@@ -101,8 +101,10 @@
 		A39427121ED0357D00914352 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				A39427131ED0357D00914352 /* GSRefreshTests.swift */,
-				A39427171ED036CE00914352 /* RefreshManagerTests.swift */,
+				A39427171ED036CE00914352 /* RefreshTests.swift */,
+				A3124ABE1EF6579E0061C1BB /* LoadMoreTests.swift */,
+				A3124AC01EF657C60061C1BB /* ObserverTests.swift */,
+				A3124AC21EF657ED0061C1BB /* UIScrollView+GSRefreshTests.swift */,
 				A39427141ED0357D00914352 /* Info.plist */,
 			);
 			path = Tests;
@@ -210,7 +212,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A39427161ED0357D00914352 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,12 +222,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A33BA11C1EC84E50001C143D /* GSRefresh.swift in Sources */,
-				A39427001ED0345B00914352 /* UIScrollView+Refresh.swift in Sources */,
-				A39426FC1ED0324800914352 /* LoadMoreManager.swift in Sources */,
-				A39426FA1ED0323D00914352 /* RefreshManager.swift in Sources */,
-				A39427021ED0347100914352 /* UIScrollView+LoadMore.swift in Sources */,
-				A39426FE1ED033AF00914352 /* ScrollViewObserver.swift in Sources */,
+				A3031DEA1EEE97BE00599066 /* UIScrollView+GSRefresh.swift in Sources */,
+				A39426FC1ED0324800914352 /* LoadMore.swift in Sources */,
+				A39426FA1ED0323D00914352 /* Refresh.swift in Sources */,
+				A3124AC51EF663C70061C1BB /* Environment.swift in Sources */,
+				A39426FE1ED033AF00914352 /* Observer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,8 +234,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A39427151ED0357D00914352 /* GSRefreshTests.swift in Sources */,
-				A39427181ED036CE00914352 /* RefreshManagerTests.swift in Sources */,
+				A3124ABF1EF6579E0061C1BB /* LoadMoreTests.swift in Sources */,
+				A3124AC31EF657ED0061C1BB /* UIScrollView+GSRefreshTests.swift in Sources */,
+				A39427181ED036CE00914352 /* RefreshTests.swift in Sources */,
+				A3124AC11EF657C60061C1BB /* ObserverTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +444,7 @@
 				A39427111ED0353400914352 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
