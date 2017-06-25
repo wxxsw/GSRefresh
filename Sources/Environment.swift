@@ -28,6 +28,4 @@ typealias Offset = CGPoint
 typealias Size = CGSize
 typealias DragState = UIGestureRecognizerState
 
-typealias DidScroll = (UIScrollView, _ old: Offset, _ new: Offset) -> ()
-typealias DidLayout = (UIScrollView, _ old: Size, _ new: Size) -> ()
-typealias DidDraging = (UIScrollView, _ old: DragState, _ new: DragState) -> ()
+typealias ObserverHandler = (UIScrollView) -> ()

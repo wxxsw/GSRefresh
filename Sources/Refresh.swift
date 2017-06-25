@@ -43,7 +43,26 @@ public class Refresh: Observer {
     override init(scrollView: UIScrollView) {
         self.state = .default
         super.init(scrollView: scrollView)
-        setupObserver()
+        
+        didScroll = { scrollView in
+            
+            
+            
+        }
+        
+        didLayout = { scrollView in
+            
+            if let view = self.view {
+                scrollView.addSubview(view)
+            }
+            
+        }
+        
+        didDraging = { scrollView in
+            
+            
+            
+        }
     }
     
     // MARK: -
@@ -54,24 +73,6 @@ public class Refresh: Observer {
     
     public func end() {
         state = .default
-    }
-    
-    // MARK: - 
-    
-    private func setupObserver() {
-        
-        didScroll = { scrollView, oldValue, newValue in
-            
-        }
-        
-        didLayout = { scrollView, oldValue, newValue in
-            
-        }
-        
-        didDraging = { scrollView, oldValue, newValue in
-            
-        }
-        
     }
     
 }

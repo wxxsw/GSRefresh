@@ -44,11 +44,15 @@ public class Observer: NSObject {
     
     weak var scrollView: UIScrollView?
     
-    var isObserving: Bool
+    var didScroll: ObserverHandler?
+    var didLayout: ObserverHandler?
+    var didDraging: ObserverHandler?
     
-    var didScroll: DidScroll?
-    var didLayout: DidLayout?
-    var didDraging: DidDraging?
+    private(set) var offset: Offset = .zero
+    private(set) var size: Size = .zero
+    private(set) var dragState: DragState = .possible
+    
+    private(set) var isObserving: Bool
     
     // MARK: -
     
@@ -58,6 +62,9 @@ public class Observer: NSObject {
     }
     
     deinit {
+        didScroll = nil
+        didLayout = nil
+        didDraging = nil
         stopObserver()
     }
     
@@ -105,7 +112,8 @@ public class Observer: NSObject {
                 oldValue != newValue
                 else { return }
             
-            didScroll?(scrollView, oldValue, newValue)
+            offset = newValue
+            didScroll?(scrollView)
             
         case KeyPath.contentSize:
             guard
@@ -114,7 +122,8 @@ public class Observer: NSObject {
                 oldValue != newValue
                 else { return }
             
-            didLayout?(scrollView, oldValue, newValue)
+            size = newValue
+            didLayout?(scrollView)
             
         case KeyPath.state:
             guard
@@ -125,7 +134,8 @@ public class Observer: NSObject {
                 oldValue != newValue
                 else { return }
             
-            didDraging?(scrollView, oldValue, newValue)
+            dragState = newValue
+            didDraging?(scrollView)
             
         default: break
         }
