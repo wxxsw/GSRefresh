@@ -36,11 +36,11 @@ class ObserverTests: XCTestCase {
         let expect = expectation(description: "")
         let toPoint = CGPoint(x: 5, y: 5)
         
-        observer.didScroll = { scrollView, oldValue, newValue in
-            if oldValue == CGPoint.zero, newValue == toPoint {
+        observer.didScroll = { scrollView in
+            if self.observer.offset == toPoint {
                 expect.fulfill()
             } else {
-                expect.expectationDescription = "\(oldValue), \(newValue)"
+                expect.expectationDescription = "\(self.observer.offset)"
             }
         }
         
@@ -53,11 +53,11 @@ class ObserverTests: XCTestCase {
         let expect = expectation(description: "")
         let toSize = CGSize(width: 100, height: 100)
         
-        observer.didLayout = { scrollView, oldValue, newValue in
-            if oldValue == CGSize.zero, newValue == toSize {
+        observer.didLayout = { scrollView in
+            if self.observer.size == toSize {
                 expect.fulfill()
             } else {
-                expect.expectationDescription = "\(oldValue), \(newValue)"
+                expect.expectationDescription = "\(self.observer.size)"
             }
         }
         
@@ -68,16 +68,21 @@ class ObserverTests: XCTestCase {
     
     func testDidDraging() {
         let expect = expectation(description: "")
+        let inset = Inset(top: 100, left: 0, bottom: 0, right: 0)
         
-        observer.didDraging = { scrollView, oldValue, newValue in
-            if oldValue == .possible, newValue == DragState.began {
+        observer.didDraging = { scrollView in
+            if self.observer.dragState == DragState.began, self.observer.inset == inset {
                 expect.fulfill()
             } else {
-                expect.expectationDescription = "\(oldValue), \(newValue)"
+                expect.expectationDescription = "\(self.observer.dragState), \(self.observer.inset)"
             }
         }
         
-        observer.didDraging?(scrollView, scrollView.panGestureRecognizer.state, .began)
+        scrollView.contentInset = inset
+        
+        XCTAssert(observer.inset == .zero)
+        
+        observer.observeValue(forKeyPath: Observer.KeyPath.state, of: nil, change: [.oldKey: UIGestureRecognizerState.possible.rawValue, .newKey: UIGestureRecognizerState.began.rawValue], context: nil)
         
         wait(for: [expect], timeout: 0.1)
     }
@@ -91,8 +96,8 @@ class ObserverTests: XCTestCase {
         let expect = expectation(description: "")
         var instance: ObserverUnderTest? = ObserverUnderTest(scrollView: scrollView)
         
-        instance?.didScroll = { scrollView, oldValue, newValue in
-            self.scrollView.contentOffset = newValue
+        instance?.didScroll = { scrollView in
+            self.scrollView.contentOffset = CGPoint(x: 1, y: 1)
             XCTFail()
         }
         

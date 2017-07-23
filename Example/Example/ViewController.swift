@@ -17,6 +17,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.frame = view.bounds
+        tableView.contentInset = .init(top: 10, left: 0, bottom: 0, right: 0)
         view.addSubview(tableView)
         
         let label = UILabel()
@@ -24,7 +25,7 @@ class ViewController: UIViewController {
         label.text = "测试测试测试"
         label.sizeToFit()
         
-        tableView.refresh.view = label
+        tableView.refresh.view = UIRefreshControl()
     }
 
 

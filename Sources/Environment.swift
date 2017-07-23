@@ -24,8 +24,9 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+typealias Inset = UIEdgeInsets
 typealias Offset = CGPoint
 typealias Size = CGSize
 typealias DragState = UIGestureRecognizerState
 
-typealias ObserverHandler = (UIScrollView) -> ()
+typealias ObserverHandler = (UIScrollView, UIView) -> ()

@@ -26,53 +26,109 @@
 
 import Foundation
 
+public protocol CustomRefresh {
+    func pulling(fraction: CGFloat)
+    func refreshing()
+}
+
 public class Refresh: Observer {
     
     public enum State {
-        case `default`
+        case initial
         case pulling
         case refreshing
     }
     
-    // MARK: -
+    // MARK: - Public property
     
-    public internal(set) var state: State
     
-    // MARK: -
     
-    override init(scrollView: UIScrollView) {
-        self.state = .default
-        super.init(scrollView: scrollView)
-        
-        didScroll = { scrollView in
-            
-            
-            
-        }
-        
-        didLayout = { scrollView in
-            
-            if let view = self.view {
-                scrollView.addSubview(view)
+    // MARK: - Internal property
+    
+    var state: State {
+        didSet {
+            switch state {
+            case .initial:      break
+            case .pulling:      customRefresh?.pulling(fraction: fraction)
+            case .refreshing:   customRefresh?.refreshing()
             }
-            
-        }
-        
-        didDraging = { scrollView in
-            
-            
-            
         }
     }
     
-    // MARK: -
+    var beforeInset: Inset = .zero
     
-    public func begin() {
+    var customRefresh: CustomRefresh? {
+        return view as? CustomRefresh
+    }
+    
+    var fraction: CGFloat {
+        return offset.y / viewTop
+    }
+    
+    var viewTop: CGFloat {
+        return -beforeInset.top + -viewHeight
+    }
+    
+    // MARK: - Initialize function
+    
+    override init(scrollView: UIScrollView) {
+        self.state = .initial
+        super.init(scrollView: scrollView)
+        
+        didScroll = { scrollView, view in
+            
+            if self.fraction >= 0 && self.state != .refreshing {
+                self.state = .pulling
+            }
+        }
+        
+        didLayout = { scrollView, view in
+            
+            
+            
+        }
+        
+        didDraging = { scrollView, view in
+            
+            switch self.dragState {
+            case .began:
+                
+                guard self.state != .refreshing else { return }
+                
+                self.beforeInset = self.inset
+                
+                if view.superview == nil {
+                    scrollView.addSubview(view)
+                }
+                
+                var newFrame = view.frame
+                    newFrame.origin.y = self.viewTop
+                
+                view.frame = newFrame
+                
+            case .ended:
+                
+                if self.fraction >= 1 {
+                    self.inset.top = self.viewHeight + self.beforeInset.top
+                    self.state = .refreshing
+                }
+                
+            default:
+                break
+            }
+        }
+    }
+    
+    // MARK: - Control function
+    
+    public func beginRefreshing() {
+        inset.top = self.viewHeight + self.beforeInset.top
         state = .refreshing
     }
     
-    public func end() {
-        state = .default
+    public func endRefreshing() {
+        inset.top = self.beforeInset.top
+        state = .initial
     }
     
 }

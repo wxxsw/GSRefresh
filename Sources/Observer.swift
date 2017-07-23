@@ -34,13 +34,17 @@ public class Observer: NSObject {
         static let state         = "state"
     }
     
-    // MARK: -
+    // MARK: - Public property
     
     public var view: UIView? {
         didSet { view != nil ? startObserver() : stopObserver() }
     }
     
-    // MARK: -
+    public var viewHeight: CGFloat {
+        return (view?.bounds.height ?? 0)
+    }
+    
+    // MARK: - Internal property
     
     weak var scrollView: UIScrollView?
     
@@ -48,13 +52,18 @@ public class Observer: NSObject {
     var didLayout: ObserverHandler?
     var didDraging: ObserverHandler?
     
-    private(set) var offset: Offset = .zero
-    private(set) var size: Size = .zero
-    private(set) var dragState: DragState = .possible
+    var offset: Offset = .zero
+    var size: Size = .zero
+    var dragState: DragState = .possible
     
-    private(set) var isObserving: Bool
+    var inset: Inset {
+        get { return scrollView?.contentInset ?? .zero }
+        set { scrollView?.contentInset = newValue }
+    }
     
-    // MARK: -
+    var isObserving: Bool
+    
+    // MARK: - Initialize function
     
     init(scrollView: UIScrollView) {
         self.scrollView = scrollView
@@ -68,14 +77,14 @@ public class Observer: NSObject {
         stopObserver()
     }
     
-    // MARK: -
+    // MARK: - Control function
     
     func startObserver() {
         stopObserver()
         
-        scrollView?.addObserver(self, forKeyPath: KeyPath.contentOffset, options: [.old, .new], context: &observerContext)
-        scrollView?.addObserver(self, forKeyPath: KeyPath.contentSize, options: [.old, .new], context: &observerContext)
-        scrollView?.panGestureRecognizer.addObserver(self, forKeyPath: KeyPath.state, options: [.old, .new], context: &observerContext)
+        scrollView?.addObserver(self, forKeyPath: KeyPath.contentOffset, options: [.old, .new], context: nil)
+        scrollView?.addObserver(self, forKeyPath: KeyPath.contentSize, options: [.old, .new], context: nil)
+        scrollView?.panGestureRecognizer.addObserver(self, forKeyPath: KeyPath.state, options: [.old, .new], context: nil)
         isObserving = true
     }
     
@@ -88,7 +97,7 @@ public class Observer: NSObject {
         isObserving = false
     }
     
-    // MARK: -
+    // MARK: - KVO function
     
     override public func observeValue(
         forKeyPath keyPath: String?,
@@ -97,8 +106,8 @@ public class Observer: NSObject {
         context: UnsafeMutableRawPointer?
     ) {
         guard
-            context == &observerContext,
             let scrollView = scrollView,
+            let view = view,
             let keyPath = keyPath,
             let change = change
             else { return }
@@ -113,7 +122,7 @@ public class Observer: NSObject {
                 else { return }
             
             offset = newValue
-            didScroll?(scrollView)
+            didScroll?(scrollView, view)
             
         case KeyPath.contentSize:
             guard
@@ -123,7 +132,7 @@ public class Observer: NSObject {
                 else { return }
             
             size = newValue
-            didLayout?(scrollView)
+            didLayout?(scrollView, view)
             
         case KeyPath.state:
             guard
@@ -135,12 +144,10 @@ public class Observer: NSObject {
                 else { return }
             
             dragState = newValue
-            didDraging?(scrollView)
+            didDraging?(scrollView, view)
             
         default: break
         }
     }
     
 }
-
-private var observerContext: Void?
