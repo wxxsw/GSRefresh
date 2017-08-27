@@ -1,6 +1,7 @@
 //
 //  UIScrollView+GSRefresh.swift
 //  GSRefresh
+//  https://github.com/wxxsw/GSRefresh
 //
 //  Created by GeSen on 2017/6/12.
 //
@@ -44,6 +45,15 @@ public extension UIScrollView {
             return newLoadMore
         }
         return loadMore
+    }
+    
+}
+
+extension UIScrollView {
+    
+    var insets: Insets {
+        get { return self.contentInset }
+        set { self.contentInset = newValue }
     }
     
 }

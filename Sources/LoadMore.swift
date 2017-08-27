@@ -1,6 +1,7 @@
 //
 //  LoadMore.swift
 //  GSRefresh
+//  https://github.com/wxxsw/GSRefresh
 //
 //  Created by GeSen on 2017/5/20.
 //
@@ -34,8 +35,6 @@ public class LoadMore: Observer {
         case refreshing
         case noMore
     }
-    
-    public internal(set) var state: State
     
     override init(scrollView: UIScrollView) {
         self.state = .default

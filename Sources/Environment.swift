@@ -1,6 +1,7 @@
 //
 //  Environment.swift
 //  Environment
+//  https://github.com/wxxsw/GSRefresh
 //
 //  Created by GeSen on 2017/5/14.
 //
@@ -24,7 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-typealias Inset = UIEdgeInsets
+typealias Insets = UIEdgeInsets
 typealias Offset = CGPoint
 typealias Size = CGSize
 typealias DragState = UIGestureRecognizerState

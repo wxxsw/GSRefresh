@@ -1,8 +1,9 @@
 //
 //  GSRefresh.h
 //  GSRefresh
+//  https://github.com/wxxsw/GSRefresh
 //
-//  Created by Gesen on 2017/5/14.
+//  Created by GeSen on 2017/5/14.
 //
 //  Copyright © 2017 GeSen <i@gesen.me>
 //

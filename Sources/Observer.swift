@@ -1,6 +1,7 @@
 //
 //  Observer.swift
 //  GSRefresh
+//  https://github.com/wxxsw/GSRefresh
 //
 //  Created by GeSen on 2017/5/20.
 //
@@ -26,78 +27,57 @@
 
 import Foundation
 
+protocol ObserverDelegate {
+    func observerStateChanged(oldState: Observer.ObserverState,
+                              newState: Observer.ObserverState)
+}
+
 public class Observer: NSObject {
     
-    struct KeyPath {
+    enum KeyPath {
         static let contentOffset = "contentOffset"
         static let contentSize   = "contentSize"
         static let state         = "state"
     }
     
-    // MARK: - Public property
-    
-    public var view: UIView? {
-        didSet { view != nil ? startObserver() : stopObserver() }
+    struct ObserverState {
+        var offset: Offset = .zero
+        var size: Size = .zero
+        var dragState: DragState = .possible
+        var isObserving: Bool = false
     }
     
-    public var viewHeight: CGFloat {
-        return (view?.bounds.height ?? 0)
-    }
-    
-    // MARK: - Internal property
+    // MARK: - Properties
     
     weak var scrollView: UIScrollView?
     
-    var didScroll: ObserverHandler?
-    var didLayout: ObserverHandler?
-    var didDraging: ObserverHandler?
-    
-    var offset: Offset = .zero
-    var size: Size = .zero
-    var dragState: DragState = .possible
-    
-    var inset: Inset {
-        get { return scrollView?.contentInset ?? .zero }
-        set { scrollView?.contentInset = newValue }
+    var view: UIView? {
+        didSet {
+            view != nil ? startObserver() : stopObserver()
+        }
     }
     
-    var isObserving: Bool
-    
-    // MARK: - Initialize function
-    
+    var observerState = ObserverState() {
+        didSet {
+            guard observerState != oldValue else { return }
+            
+            (self as? ObserverDelegate)?
+                .observerStateChanged(oldState: oldValue,
+                                      newState: observerState)
+        }
+    }
+
+    // MARK: - Initialization
+
     init(scrollView: UIScrollView) {
         self.scrollView = scrollView
-        self.isObserving = false
     }
     
     deinit {
-        didScroll = nil
-        didLayout = nil
-        didDraging = nil
         stopObserver()
     }
     
-    // MARK: - Control function
-    
-    func startObserver() {
-        stopObserver()
-        
-        scrollView?.addObserver(self, forKeyPath: KeyPath.contentOffset, options: [.old, .new], context: nil)
-        scrollView?.addObserver(self, forKeyPath: KeyPath.contentSize, options: [.old, .new], context: nil)
-        scrollView?.panGestureRecognizer.addObserver(self, forKeyPath: KeyPath.state, options: [.old, .new], context: nil)
-        isObserving = true
-    }
-    
-    func stopObserver() {
-        guard isObserving else { return }
-        
-        scrollView?.removeObserver(self, forKeyPath: KeyPath.contentOffset)
-        scrollView?.removeObserver(self, forKeyPath: KeyPath.contentSize)
-        scrollView?.panGestureRecognizer.removeObserver(self, forKeyPath: KeyPath.state)
-        isObserving = false
-    }
-    
-    // MARK: - KVO function
+    // MARK: - KVO
     
     override public func observeValue(
         forKeyPath keyPath: String?,
@@ -105,49 +85,71 @@ public class Observer: NSObject {
         change: [NSKeyValueChangeKey : Any]?,
         context: UnsafeMutableRawPointer?
     ) {
-        guard
-            let scrollView = scrollView,
-            let view = view,
-            let keyPath = keyPath,
-            let change = change
-            else { return }
+        guard scrollView != nil, view != nil,
+              let keyPath = keyPath,
+              let change = change
+              else { return }
         
         switch keyPath {
             
         case KeyPath.contentOffset:
-            guard
-                let oldValue = change[.oldKey] as? Offset,
-                let newValue = change[.newKey] as? Offset,
-                oldValue != newValue
-                else { return }
             
-            offset = newValue
-            didScroll?(scrollView, view)
+            guard let newValue = change[.newKey] as? Offset else { return }
+            
+            observerState.offset = newValue
             
         case KeyPath.contentSize:
-            guard
-                let oldValue = change[.oldKey] as? Size,
-                let newValue = change[.newKey] as? Size,
-                oldValue != newValue
-                else { return }
             
-            size = newValue
-            didLayout?(scrollView, view)
+            guard let newValue = change[.newKey] as? Size else { return }
+            
+            observerState.size = newValue
             
         case KeyPath.state:
-            guard
-                let oldRawValue = change[.oldKey] as? Int,
-                let oldValue = DragState(rawValue: oldRawValue),
-                let newRawValue = change[.newKey] as? Int,
-                let newValue = DragState(rawValue: newRawValue),
-                oldValue != newValue
-                else { return }
             
-            dragState = newValue
-            didDraging?(scrollView, view)
+            guard let newRawValue = change[.newKey] as? Int,
+                  let newValue = DragState(rawValue: newRawValue)
+                  else { return }
+            
+            observerState.dragState = newValue
             
         default: break
         }
     }
     
 }
+
+// MARK: - Private Functions
+
+private extension Observer {
+    
+    func startObserver() {
+        stopObserver()
+        
+        scrollView?.addObserver(self, forKeyPath: KeyPath.contentOffset, options: [.new], context: nil)
+        scrollView?.addObserver(self, forKeyPath: KeyPath.contentSize, options: [.new], context: nil)
+        scrollView?.panGestureRecognizer.addObserver(self, forKeyPath: KeyPath.state, options: [.new], context: nil)
+        observerState.isObserving = true
+    }
+    
+    func stopObserver() {
+        guard observerState.isObserving else { return }
+        
+        scrollView?.removeObserver(self, forKeyPath: KeyPath.contentOffset)
+        scrollView?.removeObserver(self, forKeyPath: KeyPath.contentSize)
+        scrollView?.panGestureRecognizer.removeObserver(self, forKeyPath: KeyPath.state)
+        observerState.isObserving = false
+    }
+
+}
+
+// MARK: - Equatable
+
+extension Observer.ObserverState: Equatable {}
+
+func ==(lhs: Observer.ObserverState, rhs: Observer.ObserverState) -> Bool {
+    return lhs.dragState == rhs.dragState &&
+           lhs.offset == rhs.offset &&
+           lhs.size == rhs.size
+}
+
+
