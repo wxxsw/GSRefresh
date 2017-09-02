@@ -37,7 +37,6 @@ public class LoadMore: Observer {
     }
     
     override init(scrollView: UIScrollView) {
-        self.state = .default
         super.init(scrollView: scrollView)
     }
     

@@ -28,7 +28,7 @@
 import Foundation
 
 protocol ObserverDelegate {
-    func observerStateChanged(oldState: Observer.ObserverState,
+    func observerStateChanged(previous: Observer.ObserverState,
                               newState: Observer.ObserverState)
 }
 
@@ -47,7 +47,7 @@ public class Observer: NSObject {
         var isObserving: Bool = false
     }
     
-    // MARK: - Properties
+    // MARK: Properties
     
     weak var scrollView: UIScrollView?
     
@@ -62,12 +62,12 @@ public class Observer: NSObject {
             guard observerState != oldValue else { return }
             
             (self as? ObserverDelegate)?
-                .observerStateChanged(oldState: oldValue,
+                .observerStateChanged(previous: oldValue,
                                       newState: observerState)
         }
     }
 
-    // MARK: - Initialization
+    // MARK: Initialization
 
     init(scrollView: UIScrollView) {
         self.scrollView = scrollView
@@ -77,7 +77,7 @@ public class Observer: NSObject {
         stopObserver()
     }
     
-    // MARK: - KVO
+    // MARK: KVO
     
     override public func observeValue(
         forKeyPath keyPath: String?,
@@ -151,5 +151,3 @@ func ==(lhs: Observer.ObserverState, rhs: Observer.ObserverState) -> Bool {
            lhs.offset == rhs.offset &&
            lhs.size == rhs.size
 }
-
-

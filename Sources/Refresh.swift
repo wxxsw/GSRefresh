@@ -27,17 +27,55 @@
 
 import Foundation
 
-public protocol CustomRefresh {
+public protocol CustomRefreshView {
     
+    /// top: increase the trigger refresh distance.
+    /// left and right: set the horizontal offset.
+    /// bottom: increase the distance from scrollview
     var edgeInsets: UIEdgeInsets { get }
     
-    func pulling(fraction: CGFloat)
-    func refreshing()
+    /*
+     In this method, set the UI in different states.
+    
+     There are three status types: initial, pulling, refreshing.
+    
+     initial: when the pull is not started and refresh view is not displayed.
+     pulling: is pulling down, the refresh view shows, but not release. the associated value contains the fraction, not less than 0, but will be greater than 1.
+     refreshing: refreshing and load the data.
+    */
+    func refreshStateChanged(previous: Refresh.RefreshState,
+                             newState: Refresh.RefreshState)
+}
+
+public extension Refresh {
+    
+    /*
+     Set up a custom refresh view.
+     */
+    func view<T: CustomRefreshView>(_ value: T) -> Self where T: UIView {
+        view = value
+        return self
+    }
+    
+    /*
+     Immediately trigger the refresh state.
+    */
+    func beginRefreshing() {
+        state.refreshState = .refreshing
+    }
+    
+    /*
+     End the refresh state.
+    */
+    func endRefreshing() {
+        state.refreshState = .initial
+    }
+    
 }
 
 public class Refresh: Observer {
     
-    enum RefreshState {
+    public enum RefreshState {
         case initial
         case pulling(fraction: CGFloat)
         case refreshing
@@ -45,34 +83,37 @@ public class Refresh: Observer {
     
     struct State {
         var refreshState: RefreshState = .initial
-        var beforeInsets: Inset = .zero
+        var originalInsets: Insets = .zero
     }
     
-    // MARK: - Properties
+    // MARK: Properties
     
     var state = State() {
         didSet {
             if oldValue != state {
-                stateChanged(oldState: oldValue, newState: state)
+                stateChanged(previous: oldValue, newState: state)
             }
         }
     }
     
-    // MARK: - Helper Properties
+    // MARK: Helper Properties
     
-    var customRefresh: CustomRefresh? {
-        return view as? CustomRefresh
+    /// The custom refresh view.
+    var custom: CustomRefreshView? {
+        return view as? CustomRefreshView
     }
     
+    /// The topmost position of the refresh view.
     var topside: CGFloat {
-        return -state.beforeInsets.top + -outside.height
+        return -state.originalInsets.top + -outside.height
     }
     
+    /// The total size of the refresh view and the margin.
     var outside: CGSize {
         guard let view = view else {
             return .zero
         }
-        guard let insets = customRefresh?.edgeInsets else {
+        guard let insets = custom?.edgeInsets else {
             return view.bounds.size
         }
         return CGSize(
@@ -81,12 +122,13 @@ public class Refresh: Observer {
         )
     }
     
+    /// The absolute position of the refresh view in scrollview.
     var viewFrame: CGRect {
         guard let maxW = scrollView?.bounds.width,
             let view = view else {
                 return .zero
         }
-        guard let insets = customRefresh?.edgeInsets else {
+        guard let insets = custom?.edgeInsets else {
             return CGRect(
                 x: (maxW - view.bounds.width) / 2,
                 y: topside,
@@ -104,73 +146,46 @@ public class Refresh: Observer {
     
 }
 
-// MARK: - Public Functions
-
-public extension Refresh {
-    
-    func beginRefreshing() {
-        state.refreshState = .refreshing
-    }
-    
-    func endRefreshing() {
-        state.refreshState = .initial
-    }
-    
-}
-
 // MARK: - State Changed
 
 extension Refresh {
     
-    func stateChanged(oldState: State, newState: State) {
-        
+    func stateChanged(previous: State, newState: State) {
+
         guard let scrollView = scrollView else { return }
+        guard let view = view else {
+            print("GSRefresh: Please set custom refresh view use view(_:)!")
+            return
+        }
         
-        if oldState.refreshState != newState.refreshState {
+        if previous.refreshState != newState.refreshState {
             
-            switch oldState.refreshState {
+            if case .initial = previous.refreshState {
                 
-            case .initial:
-                
-                switch newState.refreshState {
-                case .initial:
-                    break
-                case .pulling(let fraction):
-                    break
-                case .refreshing:
+                if view.superview == nil {
+                    view.frame = viewFrame
+                    scrollView.addSubview(view)
                 }
-                
-            case .pulling(let f):
-                
-                switch newState.refreshState {
-                case .initial:
-                    break
-                case .pulling(let fraction):
-                    break
-                case .refreshing:
-                    break
-                }
-                
-                customRefresh?.pulling(fraction: f)
-                
-            case .refreshing:
-                
-                switch newState.refreshState {
-                case .initial:
-                    scrollView.insets.top = self.beforeInsets.top
-                case .pulling(let fraction):
-                    break
-                case .refreshing:
-                    break
-                }
-                inset.top = self.viewHeight + self.beforeInset.top
-                
-                customRefresh?.refreshing()
                 
             }
             
+            if case .refreshing = previous.refreshState {
+                
+                if newState.refreshState == .initial {
+                    scrollView.insets.top = state.originalInsets.top
+                }
+                
+            }
+            
+            if case .refreshing = newState.refreshState {
+                
+                scrollView.insets.top = topside
+
+            }
+            
+            custom?.refreshStateChanged(previous: previous.refreshState,
+                                        newState: newState.refreshState)
         }
-        
     }
     
 }
@@ -179,51 +194,44 @@ extension Refresh {
 
 extension Refresh: ObserverDelegate {
     
-    func observerStateChanged(oldState: Observer.ObserverState,
+    func observerStateChanged(previous: Observer.ObserverState,
                               newState: Observer.ObserverState) {
         
-        let viewHeight =
-        let viewTop = -beforeInset.top + -viewHeight
+        guard let scrollView = scrollView else { return }
         
-        if oldState.offset != newState.offset {
+        if previous.dragState != newState.dragState {
             
-            let fraction = newState.offset.y / topside
-            
-            if fraction >= 0 && self.state != .refreshing {
-                self.state = .pulling
-            }
-            
-        }
-        
-        if oldState.dragState != newState.dragState {
+            guard state.refreshState != .refreshing else { return }
             
             switch newState.dragState {
                 
             case .began:
                 
-                guard self.state != .refreshing else { return }
-                
-                self.beforeInset = self.inset
-                
-                if view.superview == nil {
-                    scrollView.addSubview(view)
-                }
-                
-                var newFrame = view.frame
-                newFrame.origin.y = self.viewTop
-                
-                view.frame = newFrame
+                state.originalInsets = scrollView.insets
                 
             case .ended:
                 
-                if self.fraction >= 1 {
-                    self.inset.top = self.viewHeight + self.beforeInset.top
-                    self.state = .refreshing
+                let fraction = newState.offset.y / topside
+                
+                if fraction >= 1 {
+                    state.refreshState = .refreshing
                 }
                 
             default: break
             }
+        }
+        
+        if previous.offset != newState.offset {
             
+            guard state.refreshState != .refreshing else { return }
+            
+            let fraction = newState.offset.y / topside
+            
+            if fraction >= 0 {
+                state.refreshState = .pulling(fraction: fraction)
+            } else {
+                state.refreshState = .initial
+            }
         }
         
     }
@@ -236,16 +244,22 @@ extension Refresh.State: Equatable {}
 extension Refresh.RefreshState: Equatable {}
 
 func ==(lhs: Refresh.State, rhs: Refresh.State) -> Bool {
-    return lhs.beforeInset == rhs.beforeInset &&
+    return lhs.originalInsets == rhs.originalInsets &&
            lhs.refreshState == rhs.refreshState
 }
 
-func ==(lhs: Refresh.RefreshState, rhs: Refresh.RefreshState) -> Bool {
+public func ==(lhs: Refresh.RefreshState, rhs: Refresh.RefreshState) -> Bool {
     switch (lhs, rhs) {
-    case (.initial, .initial):          return true
-    case (.pulling, .pulling):          return true
-    case (.refreshing, .refreshing):    return true
-    default:                            return false
+    case (.initial, .initial):                  return true
+    case (.pulling(let f1), .pulling(let f2)):  return f1 == f2
+    case (.refreshing, .refreshing):            return true
+    default:                                    return false
     }
 }
 
+// MARK: - UIRefreshControl+CustomRefreshView {
+
+extension UIRefreshControl: CustomRefreshView {
+    public var edgeInsets: UIEdgeInsets { return .zero }
+    public func refreshStateChanged(previous: Refresh.RefreshState, newState: Refresh.RefreshState) {}
+}
