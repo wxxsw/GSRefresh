@@ -32,7 +32,7 @@ protocol ObserverDelegate {
                               newState: Observer.ObserverState)
 }
 
-public class Observer: NSObject {
+public class Observer: UIView {
     
     enum KeyPath {
         static let contentOffset = "contentOffset"
@@ -57,6 +57,8 @@ public class Observer: NSObject {
         }
     }
     
+    var handler: (() -> Void)?
+    
     var observerState = ObserverState() {
         didSet {
             guard observerState != oldValue else { return }
@@ -71,10 +73,22 @@ public class Observer: NSObject {
 
     init(scrollView: UIScrollView) {
         self.scrollView = scrollView
+        super.init(frame: .zero)
+        scrollView.addSubview(self)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     deinit {
         stopObserver()
+    }
+    
+    public override func willMove(toWindow newWindow: UIWindow?) {
+        if newWindow == nil {
+            stopObserver()
+        }
     }
     
     // MARK: KVO
@@ -138,6 +152,8 @@ private extension Observer {
         scrollView?.removeObserver(self, forKeyPath: KeyPath.contentSize)
         scrollView?.panGestureRecognizer.removeObserver(self, forKeyPath: KeyPath.state)
         observerState.isObserving = false
+        
+        handler = nil
     }
 
 }

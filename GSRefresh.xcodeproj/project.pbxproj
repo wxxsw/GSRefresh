@@ -12,6 +12,7 @@
 		A3124AC11EF657C60061C1BB /* ObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3124AC01EF657C60061C1BB /* ObserverTests.swift */; };
 		A3124AC31EF657ED0061C1BB /* UIScrollView+GSRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3124AC21EF657ED0061C1BB /* UIScrollView+GSRefreshTests.swift */; };
 		A3124AC51EF663C70061C1BB /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3124AC41EF663C70061C1BB /* Environment.swift */; };
+		A339BDF41F5C336900E67CE9 /* UIRefreshControl+GSRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A339BDF31F5C336900E67CE9 /* UIRefreshControl+GSRefresh.swift */; };
 		A33BA0F31EC80A7A001C143D /* GSRefresh.h in Headers */ = {isa = PBXBuildFile; fileRef = A33BA0F11EC80A7A001C143D /* GSRefresh.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A39426FA1ED0323D00914352 /* Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426F91ED0323D00914352 /* Refresh.swift */; };
 		A39426FC1ED0324800914352 /* LoadMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39426FB1ED0324800914352 /* LoadMore.swift */; };
@@ -36,6 +37,7 @@
 		A3124AC01EF657C60061C1BB /* ObserverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverTests.swift; sourceTree = "<group>"; };
 		A3124AC21EF657ED0061C1BB /* UIScrollView+GSRefreshTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+GSRefreshTests.swift"; sourceTree = "<group>"; };
 		A3124AC41EF663C70061C1BB /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		A339BDF31F5C336900E67CE9 /* UIRefreshControl+GSRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+GSRefresh.swift"; sourceTree = "<group>"; };
 		A33BA0E21EC7FCEA001C143D /* GSRefresh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GSRefresh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A33BA0F11EC80A7A001C143D /* GSRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSRefresh.h; sourceTree = "<group>"; };
 		A33BA0F21EC80A7A001C143D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				A39426FB1ED0324800914352 /* LoadMore.swift */,
 				A39426FD1ED033AF00914352 /* Observer.swift */,
 				A3031DE91EEE97BE00599066 /* UIScrollView+GSRefresh.swift */,
+				A339BDF31F5C336900E67CE9 /* UIRefreshControl+GSRefresh.swift */,
 				A33BA0F21EC80A7A001C143D /* Info.plist */,
 				A33BA0F11EC80A7A001C143D /* GSRefresh.h */,
 			);
@@ -222,6 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A339BDF41F5C336900E67CE9 /* UIRefreshControl+GSRefresh.swift in Sources */,
 				A3031DEA1EEE97BE00599066 /* UIScrollView+GSRefresh.swift in Sources */,
 				A39426FC1ED0324800914352 /* LoadMore.swift in Sources */,
 				A39426FA1ED0323D00914352 /* Refresh.swift in Sources */,

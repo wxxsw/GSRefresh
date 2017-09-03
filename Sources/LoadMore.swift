@@ -36,10 +36,6 @@ public class LoadMore: Observer {
         case noMore
     }
     
-    override init(scrollView: UIScrollView) {
-        super.init(scrollView: scrollView)
-    }
-    
     public func begin() {
         
     }

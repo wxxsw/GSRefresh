@@ -19,11 +19,21 @@ class TableViewController: UITableViewController {
         label.text = "测试测试测试"
         label.sizeToFit()
         
-        tableView.refresh.view(UIRefreshControl()).beginRefreshing()
+        tableView
+            .refresh
+            .setup(view: UIRefreshControl()) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                    self?.tableView.refresh.endRefreshing()
+                }
+            }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.tableView.refresh.endRefreshing()
-        }
+//        tableView.refresh
+//            .view(UIRefreshControl())
+//            .beginRefreshing()
     }
     
     deinit {
