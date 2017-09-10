@@ -152,6 +152,11 @@ public class Refresh: Observer {
         )
     }
     
+    /// The fraction of the pulling state.
+    var pullingFraction: CGFloat {
+        return (observerState.offset.y + (scrollView?.insets.top ?? 0)) / -outside.height
+    }
+    
 }
 
 // MARK: - State Changed
@@ -175,8 +180,6 @@ extension Refresh {
                     scrollView.addSubview(view)
                 }
                 
-                state.originalInsets = scrollView.insets
-                
             }
             
             if case .refreshing = previous.refreshState {
@@ -190,6 +193,7 @@ extension Refresh {
             if case .refreshing = newState.refreshState {
                 
                 print(scrollView.contentInset)
+                state.originalInsets = scrollView.insets
                 scrollView.insets.top = abs(topside)
                 print(scrollView.contentInset)
                 handler?()
@@ -210,10 +214,6 @@ extension Refresh: ObserverDelegate {
     func observerStateChanged(previous: Observer.ObserverState,
                               newState: Observer.ObserverState) {
         
-        func calculateFraction() -> CGFloat {
-            return newState.offset.y / self.topside
-        }
-        
         guard state.refreshState != .refreshing else {
             return
         }
@@ -226,10 +226,10 @@ extension Refresh: ObserverDelegate {
             
             print("o:[\(previous.offset) - \(newState.offset)]")
             
-            let fraction = calculateFraction()
+            let pullingFraction = self.pullingFraction
             
-            if fraction >= 0 {
-                state.refreshState = .pulling(fraction: fraction)
+            if pullingFraction > 0 {
+                state.refreshState = .pulling(fraction: pullingFraction)
             } else {
                 state.refreshState = .initial
             }
@@ -241,7 +241,7 @@ extension Refresh: ObserverDelegate {
             
             if case .ended = newState.dragState {
                 
-                if calculateFraction() >= 1 {
+                if pullingFraction >= 1 {
                     state.refreshState = .refreshing
                 }
             }
