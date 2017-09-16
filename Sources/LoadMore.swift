@@ -27,21 +27,170 @@
 
 import Foundation
 
+public protocol CustomLoadMoreView {
+    
+    /// -top: increase the distance from scrollview.
+    /// -left and right: set the horizontal offset.
+    /// -bottom: increase the trigger refresh distance.
+    var edgeInsets: UIEdgeInsets { get }
+    
+    /**
+     In this method, set the UI in different states.
+     There are three status types: initial, refreshing, noMore.
+     
+     - parameter previous: previous load more state
+     - parameter newState: new load more state
+     */
+    func loadMoreStateChanged(previous: LoadMoreState, newState: LoadMoreState)
+}
+
+public extension LoadMore {
+    
+    /**
+     Set up a custom refresh view and handler.
+     */
+    @discardableResult
+    func setup<T: CustomLoadMoreView>(view: T, handler: @escaping () -> Void) -> Self where T: UIView {
+        self.view = view
+        self.handler = handler
+        return self
+    }
+    
+    /**
+     Immediately trigger the refresh state.
+     */
+    func beginRefreshing() {
+        loadMoreState = .refreshing
+    }
+    
+    /**
+     End the refresh state.
+     */
+    func endRefreshing() {
+        loadMoreState = .initial
+    }
+    
+}
+
+public enum LoadMoreState {
+    
+    /// when the load more view is not displayed.
+    case initial
+    
+    /// refreshing and load the data.
+    case refreshing
+    
+    /// no more data.
+    case noMore
+    
+}
+
 public class LoadMore: Observer {
     
-    public enum State {
-        case `default`
-        case pulling
-        case refreshing
-        case noMore
+    // MARK: Properties
+    
+    var loadMoreState: LoadMoreState = .initial {
+        didSet {
+            if oldValue != loadMoreState {
+                loadMoreStateChanged(previous: oldValue,
+                                     newState: loadMoreState)
+            }
+        }
     }
     
-    public func begin() {
+    // MARK: Helper Properties
+    
+    /// The custom refresh view.
+    var custom: CustomLoadMoreView? {
+        return view as? CustomLoadMoreView
+    }
+    
+    /// The topmost position of the refresh view.
+    var topside: CGFloat {
+        return -observerState.insets.top + -outside.height
+    }
+    
+    /// The total size of the refresh view and the margin.
+    var outside: CGSize {
+        guard let view = view else {
+            return .zero
+        }
+        guard let insets = custom?.edgeInsets else {
+            return view.bounds.size
+        }
+        return CGSize(
+            width: insets.left + view.bounds.width + insets.right,
+            height: insets.top + view.bounds.height + insets.bottom
+        )
+    }
+    
+    /// The absolute position of the refresh view in scrollview.
+    var viewFrame: CGRect {
+        guard let maxW = scrollView?.bounds.width,
+            let view = view else {
+                return .zero
+        }
+        guard let insets = custom?.edgeInsets else {
+            return CGRect(
+                x: (maxW - view.bounds.width) / 2,
+                y: topside,
+                width: view.bounds.width,
+                height: view.bounds.height
+            )
+        }
+        return CGRect(
+            x: (maxW - view.bounds.width) / 2 + (insets.right - insets.left),
+            y: topside + insets.top,
+            width: view.bounds.width,
+            height: view.bounds.height
+        )
+    }
+    
+    /// The fraction of the pulling state.
+    var pullingFraction: CGFloat {
+        return (observerState.offset.y + (scrollView?.insets.top ?? 0)) / -outside.height
+    }
+    
+}
+
+// MARK: - State Changed
+
+extension LoadMore {
+    
+    func loadMoreStateChanged(previous: LoadMoreState, newState: LoadMoreState) {
         
-    }
-    
-    public func end() {
+        guard let scrollView = scrollView, let view = view else {
+            return
+        }
         
+        custom?.loadMoreStateChanged(previous: previous, newState: newState)
     }
     
+}
+
+// MARK: - ScrollView State Changed
+
+extension LoadMore: ObserverDelegate {
+    
+    func observerStateChanged(previous: Observer.ObserverState,
+                              newState: Observer.ObserverState) {
+        
+        guard loadMoreState != .refreshing else {
+            return
+        }
+    }
+    
+}
+
+// MARK: - Equatable
+
+extension LoadMoreState: Equatable {}
+
+public func ==(lhs: LoadMoreState, rhs: LoadMoreState) -> Bool {
+    switch (lhs, rhs) {
+    case (.initial, .initial):                  return true
+    case (.noMore, .noMore):                    return true
+    case (.refreshing, .refreshing):            return true
+    default:                                    return false
+    }
 }

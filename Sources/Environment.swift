@@ -29,5 +29,3 @@ typealias Insets = UIEdgeInsets
 typealias Offset = CGPoint
 typealias Size = CGSize
 typealias DragState = UIGestureRecognizerState
-
-typealias ObserverHandler = (UIScrollView, UIView) -> ()

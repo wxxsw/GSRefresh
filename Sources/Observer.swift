@@ -43,6 +43,7 @@ public class Observer: UIView {
     struct ObserverState {
         var offset: Offset = .zero
         var size: Size = .zero
+        var insets: Insets = .zero
         var dragState: DragState = .possible
         var isObserving: Bool = false
     }

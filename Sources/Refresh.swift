@@ -31,7 +31,7 @@ public protocol CustomRefreshView {
     
     /// -top: increase the trigger refresh distance.
     /// -left and right: set the horizontal offset.
-    /// -bottom: increase the distance from scrollview
+    /// -bottom: increase the distance from scrollview.
     var edgeInsets: UIEdgeInsets { get }
     
     /**
@@ -60,14 +60,14 @@ public extension Refresh {
      Immediately trigger the refresh state.
     */
     func beginRefreshing() {
-        state.refreshState = .refreshing
+        refreshState = .refreshing
     }
     
     /**
      End the refresh state.
     */
     func endRefreshing() {
-        state.refreshState = .initial
+        refreshState = .initial
     }
     
 }
@@ -89,17 +89,13 @@ public enum RefreshState {
 
 public class Refresh: Observer {
     
-    struct State {
-        var refreshState: RefreshState = .initial
-        var originalInsets: Insets = .zero
-    }
-    
     // MARK: Properties
     
-    var state = State() {
+    var refreshState: RefreshState = .initial {
         didSet {
-            if oldValue != state {
-                stateChanged(previous: oldValue, newState: state)
+            if oldValue != refreshState {
+                refreshStateChanged(previous: oldValue,
+                                    newState: refreshState)
             }
         }
     }
@@ -113,7 +109,7 @@ public class Refresh: Observer {
     
     /// The topmost position of the refresh view.
     var topside: CGFloat {
-        return -state.originalInsets.top + -outside.height
+        return -observerState.insets.top + -outside.height
     }
     
     /// The total size of the refresh view and the margin.
@@ -163,46 +159,63 @@ public class Refresh: Observer {
 
 extension Refresh {
     
-    func stateChanged(previous: State, newState: State) {
+    func refreshStateChanged(previous: RefreshState, newState: RefreshState) {
 
         guard let scrollView = scrollView, let view = view else {
             return
         }
         
-        if previous.refreshState != newState.refreshState {
+        if case .initial = previous {
             
-            print("r:[\(previous.refreshState) - \(newState.refreshState)]")
+            observerState.insets = scrollView.insets
             
-            if case .initial = previous.refreshState {
+            if view.superview == nil {
                 
-                if view.superview == nil {
-                    view.frame = viewFrame
-                    scrollView.addSubview(view)
-                }
+                view.frame = viewFrame
                 
-            }
-            
-            if case .refreshing = previous.refreshState {
+                scrollView.addSubview(view)
                 
-                if newState.refreshState == .initial {
-                    scrollView.insets.top = state.originalInsets.top
-                }
+            } else {
+                
+                view.isHidden = false
                 
             }
-            
-            if case .refreshing = newState.refreshState {
-                
-                print(scrollView.contentInset)
-                state.originalInsets = scrollView.insets
-                scrollView.insets.top = abs(topside)
-                print(scrollView.contentInset)
-                handler?()
-
-            }
-            
-            custom?.refreshStateChanged(previous: previous.refreshState,
-                                        newState: newState.refreshState)
         }
+        
+        if case .pulling = previous {
+            
+            if newState == .initial {
+                
+                view.isHidden = true
+            }
+        }
+        
+        if case .refreshing = previous {
+            
+            if newState == .initial {
+                
+                UIView.animate(
+                    withDuration: 0.25,
+                    animations: {
+                        scrollView.insets.top = self.observerState.insets.top
+                    },
+                    completion: {
+                        if $0 { view.isHidden = true }
+                    }
+                )
+            }
+        }
+        
+        if case .refreshing = newState {
+            
+            UIView.animate(withDuration: 0.1) {
+                scrollView.insets.top = abs(self.topside)
+            }
+            
+            handler?()
+        }
+        
+        custom?.refreshStateChanged(previous: previous, newState: newState)
     }
     
 }
@@ -214,35 +227,31 @@ extension Refresh: ObserverDelegate {
     func observerStateChanged(previous: Observer.ObserverState,
                               newState: Observer.ObserverState) {
         
-        guard state.refreshState != .refreshing else {
+        guard refreshState != .refreshing else {
             return
         }
         
         if previous.size != newState.size {
-            state.refreshState = .initial
+            refreshState = .initial
         }
         
         if previous.offset != newState.offset {
             
-            print("o:[\(previous.offset) - \(newState.offset)]")
-            
             let pullingFraction = self.pullingFraction
             
             if pullingFraction > 0 {
-                state.refreshState = .pulling(fraction: pullingFraction)
+                refreshState = .pulling(fraction: pullingFraction)
             } else {
-                state.refreshState = .initial
+                refreshState = .initial
             }
         }
         
         if previous.dragState != newState.dragState {
             
-            print("d:[\(previous.dragState) - \(newState.dragState)]")
-            
             if case .ended = newState.dragState {
                 
                 if pullingFraction >= 1 {
-                    state.refreshState = .refreshing
+                    refreshState = .refreshing
                 }
             }
         }
@@ -252,13 +261,7 @@ extension Refresh: ObserverDelegate {
 
 // MARK: - Equatable
 
-extension Refresh.State: Equatable {}
 extension RefreshState: Equatable {}
-
-func ==(lhs: Refresh.State, rhs: Refresh.State) -> Bool {
-    return lhs.originalInsets == rhs.originalInsets &&
-           lhs.refreshState == rhs.refreshState
-}
 
 public func ==(lhs: RefreshState, rhs: RefreshState) -> Bool {
     switch (lhs, rhs) {

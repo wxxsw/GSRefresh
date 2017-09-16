@@ -49,6 +49,7 @@ class TableViewController: UITableViewController {
         
         let test = TestView(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
         
+        tableView.contentInset = .init(top: 40, left: 0, bottom: 20, right: 0)
         tableView
             .refresh
             .setup(view: test) {
@@ -77,6 +78,16 @@ class TableViewController: UITableViewController {
 extension TableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 20
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = UIColor.blue
+        return view
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
     }
     
