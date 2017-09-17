@@ -82,13 +82,10 @@ public class Observer: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        stopObserver()
-    }
-    
     public override func willMove(toWindow newWindow: UIWindow?) {
         if newWindow == nil {
             stopObserver()
+            handler = nil
         }
     }
     
@@ -153,8 +150,6 @@ private extension Observer {
         scrollView?.removeObserver(self, forKeyPath: KeyPath.contentSize)
         scrollView?.panGestureRecognizer.removeObserver(self, forKeyPath: KeyPath.state)
         observerState.isObserving = false
-        
-        handler = nil
     }
 
 }
