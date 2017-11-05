@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/wxxsw/GSRefresh"
   s.license      = "MIT"
 
-  s.author       = { "GeSen" => "i@gesen.me" }
+  s.author       = { "Gesen" => "i@gesen.me" }
 
   s.platform     = :ios, "8.0"
 

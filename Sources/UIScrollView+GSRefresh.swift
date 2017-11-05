@@ -3,9 +3,9 @@
 //  GSRefresh
 //  https://github.com/wxxsw/GSRefresh
 //
-//  Created by GeSen on 2017/6/12.
+//  Created by Gesen on 2017/6/12.
 //
-//  Copyright © 2017 GeSen <i@gesen.me>
+//  Copyright © 2017 Gesen <i@gesen.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

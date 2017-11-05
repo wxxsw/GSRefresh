@@ -2,8 +2,8 @@
 //  TableViewController.swift
 //  Example
 //
-//  Created by GeSen on 2017/9/2.
-//  Copyright © 2017年 GeSen <i@gesen.me>. All rights reserved.
+//  Created by Gesen on 2017/9/2.
+//  Copyright © 2017年 Gesen <i@gesen.me>. All rights reserved.
 //
 
 import UIKit
