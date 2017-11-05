@@ -148,6 +148,11 @@ scrollView.loadMore.setup(view: someView) {
 - iOS 8.0+
 - Xcode 9.x (Swift 4.x)
 
+### [0.3.0](https://github.com/wxxsw/GSRefresh/tree/0.3.0)
+
+- iOS 8.0+
+- Xcode 9.x (Swift 3.x)
+
 ## Installation
 
 ### [CocoaPods](http://cocoapods.org/):
