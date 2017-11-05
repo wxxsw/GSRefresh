@@ -3,7 +3,7 @@
 //  Example
 //
 //  Created by GeSen on 2017/5/14.
-//  Copyright © 2017年 GeSen. All rights reserved.
+//  Copyright © 2017年 GeSen <i@gesen.me>. All rights reserved.
 //
 
 import UIKit

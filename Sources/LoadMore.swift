@@ -27,12 +27,23 @@
 
 import Foundation
 
-public protocol CustomLoadMoreView {
+public typealias CustomLoadMoreView = CustomLoadMore & UIView
+
+public protocol CustomLoadMore {
     
+    /// @optional, default is 0.
+    /// Set the preload configuration, such as half screen 0.5, one screen is 1, two screens are 2, no preload is 0.
+    var preload: CGFloat { get }
+    
+    /// @optional, default is true.
+    /// When there is no more data, is it necessary to keep the height of the custom view? If it is false, it will not be displayed.
+    var isVisibleNoMore: Bool { get }
+    
+    /// @optional, default is .zero.
     /// -top: increase the distance from scrollview.
     /// -left and right: set the horizontal offset.
-    /// -bottom: increase the trigger refresh distance.
-    var edgeInsets: UIEdgeInsets { get }
+    /// -bottom: increase the distance from the bottom.
+    var loadMoreInsets: UIEdgeInsets { get }
     
     /**
      In this method, set the UI in different states.
@@ -44,13 +55,23 @@ public protocol CustomLoadMoreView {
     func loadMoreStateChanged(previous: LoadMoreState, newState: LoadMoreState)
 }
 
+public extension CustomLoadMore {
+    
+    /// Default value
+    var preload: CGFloat { return 0 }
+    var isVisibleNoMore: Bool { return true }
+    var loadMoreInsets: UIEdgeInsets { return .zero }
+    
+}
+
 public extension LoadMore {
     
     /**
      Set up a custom refresh view and handler.
      */
     @discardableResult
-    func setup<T: CustomLoadMoreView>(view: T, handler: @escaping () -> Void) -> Self where T: UIView {
+    func setup(view: CustomLoadMoreView,
+               handler: @escaping () -> Void) -> Self {
         self.view = view
         self.handler = handler
         return self
@@ -64,10 +85,24 @@ public extension LoadMore {
     }
     
     /**
-     End the refresh state.
+     End the refresh state and set whether no longer try to load new data.
      */
-    func endRefreshing() {
+    func endRefreshing(noMore: Bool) {
+        loadMoreState = noMore ? .noMore : .initial
+    }
+    
+    /**
+     Reset to continue loading data.
+     */
+    func reset() {
         loadMoreState = .initial
+    }
+    
+    /**
+     No longer try to load new data.
+     */
+    func noMore() {
+        loadMoreState = .noMore
     }
     
 }
@@ -107,7 +142,7 @@ public class LoadMore: Observer {
     
     /// The topmost position of the refresh view.
     var topside: CGFloat {
-        return -observerState.insets.top + -outside.height
+        return observerState.size.height + observerState.insets.bottom
     }
     
     /// The total size of the refresh view and the margin.
@@ -115,22 +150,22 @@ public class LoadMore: Observer {
         guard let view = view else {
             return .zero
         }
-        guard let insets = custom?.edgeInsets else {
+        guard let insets = custom?.loadMoreInsets else {
             return view.bounds.size
         }
         return CGSize(
-            width: insets.left + view.bounds.width + insets.right,
-            height: insets.top + view.bounds.height + insets.bottom
+            width: view.bounds.width + insets.horizontal,
+            height: view.bounds.height + insets.vertical
         )
     }
     
     /// The absolute position of the refresh view in scrollview.
     var viewFrame: CGRect {
         guard let maxW = scrollView?.bounds.width,
-            let view = view else {
-                return .zero
+              let view = view else {
+            return .zero
         }
-        guard let insets = custom?.edgeInsets else {
+        guard let insets = custom?.loadMoreInsets else {
             return CGRect(
                 x: (maxW - view.bounds.width) / 2,
                 y: topside,
@@ -142,13 +177,13 @@ public class LoadMore: Observer {
             x: (maxW - view.bounds.width) / 2 + (insets.right - insets.left),
             y: topside + insets.top,
             width: view.bounds.width,
-            height: view.bounds.height
+            height: view.bounds.height + insets.vertical
         )
     }
     
-    /// The fraction of the pulling state.
-    var pullingFraction: CGFloat {
-        return (observerState.offset.y + (scrollView?.insets.top ?? 0)) / -outside.height
+    /// The fraction for refreshing.
+    var fraction: CGFloat {
+        return (topside - observerState.offset.y) / (scrollView?.bounds.height ?? 0) - 1
     }
     
 }
@@ -163,6 +198,42 @@ extension LoadMore {
             return
         }
         
+        if case .initial = previous {
+            
+            if newState == .refreshing ||
+              (newState == .noMore && custom?.isVisibleNoMore == true) {
+                
+                observerState.insets.bottom = scrollView.insets.bottom
+                
+                scrollView.insets.bottom += outside.height
+                
+                if view.superview == nil { scrollView.addSubview(view) }
+                
+                view.frame = viewFrame
+                view.isHidden = false
+            }
+            
+            if case .refreshing = newState {
+                handler?()
+            }
+        }
+        
+        if case .initial = newState {
+            
+            view.isHidden = true
+            scrollView.insets.bottom = observerState.insets.bottom
+        }
+        
+        if case .refreshing = previous, newState == .noMore {
+            
+            if custom?.isVisibleNoMore == true {
+                view.frame = viewFrame
+            } else {
+                view.isHidden = true
+                scrollView.insets.bottom = observerState.insets.bottom
+            }
+        }
+        
         custom?.loadMoreStateChanged(previous: previous, newState: newState)
     }
     
@@ -175,8 +246,16 @@ extension LoadMore: ObserverDelegate {
     func observerStateChanged(previous: Observer.ObserverState,
                               newState: Observer.ObserverState) {
         
-        guard loadMoreState != .refreshing else {
+        guard loadMoreState != .refreshing,
+              loadMoreState != .noMore,
+              newState.size.height > 0 else {
             return
+        }
+        
+        if previous.offset != newState.offset {
+            if fraction - (custom?.preload ?? 0) <= 0 {
+                loadMoreState = .refreshing
+            }
         }
     }
     

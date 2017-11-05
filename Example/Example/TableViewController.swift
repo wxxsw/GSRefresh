@@ -9,62 +9,64 @@
 import UIKit
 import GSRefresh
 
-class TestView: UIView, CustomRefreshView {
+class TableViewController: UITableViewController {
     
-    let label = UILabel()
-    
-    var edgeInsets: UIEdgeInsets = .zero
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    enum Page {
+        case basic(Basic)
+//        case advanced(Advanced)
         
-        label.text = "测试测试测试"
-        label.sizeToFit()
-        addSubview(label)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        label.frame = bounds
-    }
-    
-    func refreshStateChanged(previous: RefreshState, newState: RefreshState) {
-        switch newState {
-        case .initial: label.textColor = .red
-        case .pulling: label.textColor = .gray
-        case .refreshing: label.textColor = .green
+        enum Basic {
+            case `default`
+        }
+        
+        enum Advanced {
+            /// coming soon
         }
     }
     
-}
-
-class TableViewController: UITableViewController {
+    var page: Page = .basic(.default)
+    
+    var count = 30
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let test = TestView(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
+        let refreshView: CustomRefreshView
+        let loadMoreView: CustomLoadMoreView
         
-        tableView.contentInset = .init(top: 40, left: 0, bottom: 20, right: 0)
-        tableView
-            .refresh
-            .setup(view: test) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-                    self?.tableView.refresh.endRefreshing()
-                }
+        switch page {
+            
+        case .basic(let type):
+            
+            switch type {
+            case .default:
+                let frame = CGRect(x: 0, y: 0, width: 300, height: 40)
+                refreshView = BasicDefaultView(frame: frame)
+                loadMoreView = BasicDefaultView(frame: frame)
             }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+
+        }
         
-//        tableView.refresh
-//            .view(UIRefreshControl())
-//            .beginRefreshing()
+        tableView.refresh.setup(view: refreshView) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                guard let this = self else { return }
+                
+                this.count = 30
+                this.tableView.reloadData()
+                this.tableView.refresh.endRefreshing()
+                this.tableView.loadMore.reset()
+            }
+        }
+        
+        tableView.loadMore.setup(view: loadMoreView) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                guard let this = self else { return }
+                
+                this.count += 30
+                this.tableView.reloadData()
+                this.tableView.loadMore.endRefreshing(noMore: this.count > 60)
+            }
+        }
     }
     
     deinit {
@@ -78,17 +80,7 @@ class TableViewController: UITableViewController {
 extension TableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
-    }
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = UIColor.blue
-        return view
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
+        return count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

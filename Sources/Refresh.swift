@@ -27,12 +27,19 @@
 
 import Foundation
 
-public protocol CustomRefreshView {
+public typealias CustomRefreshView = CustomRefresh & UIView
+
+public protocol CustomRefresh {
     
+    /// @optional, default is 44.
+    /// Sets the height displayed when refreshing.
+    var refreshingKeepHeight: CGFloat { get }
+    
+    /// @optional, default is .init(top: 30, left: 0, bottom: 0, right: 0).
     /// -top: increase the trigger refresh distance.
     /// -left and right: set the horizontal offset.
     /// -bottom: increase the distance from scrollview.
-    var edgeInsets: UIEdgeInsets { get }
+    var refreshInsets: UIEdgeInsets { get }
     
     /**
      In this method, set the UI in different states.
@@ -44,13 +51,24 @@ public protocol CustomRefreshView {
     func refreshStateChanged(previous: RefreshState, newState: RefreshState)
 }
 
+public extension CustomRefresh {
+    
+    /// Default value
+    var refreshingKeepHeight: CGFloat { return 44 }
+    var refreshInsets: UIEdgeInsets {
+        return .init(top: 30, left: 0, bottom: 0, right: 0)
+    }
+    
+}
+
 public extension Refresh {
     
     /**
      Set up a custom refresh view and handler.
     */
     @discardableResult
-    func setup<T: CustomRefreshView>(view: T, handler: @escaping () -> Void) -> Self where T: UIView {
+    func setup(view: CustomRefreshView,
+               handler: @escaping () -> Void) -> Self {
         self.view = view
         self.handler = handler
         return self
@@ -109,7 +127,12 @@ public class Refresh: Observer {
     
     /// The topmost position of the refresh view.
     var topside: CGFloat {
-        return -observerState.insets.top + -outside.height
+        switch refreshState {
+        case .initial, .pulling:
+            return -(observerState.insets.top + outside.height)
+        case .refreshing:
+            return -(observerState.insets.top + custom!.refreshingKeepHeight)
+        }
     }
     
     /// The total size of the refresh view and the margin.
@@ -117,7 +140,7 @@ public class Refresh: Observer {
         guard let view = view else {
             return .zero
         }
-        guard let insets = custom?.edgeInsets else {
+        guard let insets = custom?.refreshInsets else {
             return view.bounds.size
         }
         return CGSize(
@@ -132,7 +155,7 @@ public class Refresh: Observer {
             let view = view else {
                 return .zero
         }
-        guard let insets = custom?.edgeInsets else {
+        guard let insets = custom?.refreshInsets else {
             return CGRect(
                 x: (maxW - view.bounds.width) / 2,
                 y: topside,
@@ -148,9 +171,13 @@ public class Refresh: Observer {
         )
     }
     
-    /// The fraction of the pulling state.
-    var pullingFraction: CGFloat {
-        return (observerState.offset.y + (scrollView?.insets.top ?? 0)) / -outside.height
+    /// The fraction for refreshing.
+    var fraction: CGFloat {
+        if #available(iOS 11.0, *) {
+            return (observerState.offset.y + (scrollView?.adjustedContentInset.top ?? 0)) / -outside.height
+        } else {
+            return (observerState.offset.y + observerState.insets.top) / -outside.height
+        }
     }
     
 }
@@ -167,7 +194,7 @@ extension Refresh {
         
         if case .initial = previous {
             
-            observerState.insets = scrollView.insets
+            observerState.insets.top = scrollView.insets.top
             
             if view.superview == nil {
                 
@@ -237,7 +264,7 @@ extension Refresh: ObserverDelegate {
         
         if previous.offset != newState.offset {
             
-            let pullingFraction = self.pullingFraction
+            let pullingFraction = self.fraction
             
             if pullingFraction > 0 {
                 refreshState = .pulling(fraction: pullingFraction)
@@ -250,7 +277,7 @@ extension Refresh: ObserverDelegate {
             
             if case .ended = newState.dragState {
                 
-                if pullingFraction >= 1 {
+                if fraction >= 1 {
                     refreshState = .refreshing
                 }
             }

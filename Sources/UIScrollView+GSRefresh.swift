@@ -56,6 +56,11 @@ extension UIScrollView {
         set { self.contentInset = newValue }
     }
     
+    @available(iOS 11.0, *)
+    var adjustedInsets: Insets {
+        return self.adjustedContentInset
+    }
+    
 }
 
 private var refreshKey: Void?
