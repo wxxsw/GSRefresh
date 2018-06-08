@@ -177,7 +177,7 @@ public class LoadMore: Observer {
             x: (maxW - view.bounds.width) / 2 + (insets.right - insets.left),
             y: topside + insets.top,
             width: view.bounds.width,
-            height: view.bounds.height + insets.vertical
+            height: view.bounds.height
         )
     }
     
