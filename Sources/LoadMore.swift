@@ -124,7 +124,7 @@ public class LoadMore: Observer {
     
     // MARK: Properties
     
-    var loadMoreState: LoadMoreState = .initial {
+    public private(set) var loadMoreState: LoadMoreState = .initial {
         didSet {
             if oldValue != loadMoreState {
                 loadMoreStateChanged(previous: oldValue,

@@ -109,7 +109,7 @@ public class Refresh: Observer {
     
     // MARK: Properties
     
-    var refreshState: RefreshState = .initial {
+    public private(set) var refreshState: RefreshState = .initial {
         didSet {
             if oldValue != refreshState {
                 refreshStateChanged(previous: oldValue,
