@@ -82,8 +82,8 @@ public class Observer: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func willMove(toWindow newWindow: UIWindow?) {
-        if newWindow == nil {
+    public override func willMove(toSuperview newSuperview: UIView?) {
+        if newSuperview == nil {
             stopObserver()
             handler = nil
         }
