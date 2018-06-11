@@ -203,7 +203,7 @@ extension LoadMore {
             if newState == .refreshing ||
               (newState == .noMore && custom?.isVisibleNoMore == true) {
                 
-                observerState.insets.bottom = scrollView.insets.bottom
+                observerState.insets = scrollView.insets
                 
                 scrollView.insets.bottom += outside.height
                 
@@ -246,16 +246,20 @@ extension LoadMore: ObserverDelegate {
     func observerStateChanged(previous: Observer.ObserverState,
                               newState: Observer.ObserverState) {
         
-        guard loadMoreState != .refreshing,
-              loadMoreState != .noMore,
-              newState.size.height > 0 else {
+        guard newState.size.height > 0 else {
             return
         }
         
-        if previous.offset != newState.offset {
-            if fraction - (custom?.preload ?? 0) <= 0 {
-                loadMoreState = .refreshing
+        if loadMoreState == .initial {
+            if previous.offset != newState.offset {
+                if fraction - (custom?.preload ?? 0) <= 0 {
+                    loadMoreState = .refreshing
+                }
             }
+        }
+        
+        if previous.size != newState.size {
+            view?.frame = viewFrame
         }
     }
     

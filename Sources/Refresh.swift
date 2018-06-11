@@ -44,10 +44,10 @@ public protocol CustomRefresh {
     /**
      In this method, set the UI in different states.
      There are three status types: initial, pulling, refreshing.
-    
+     
      - parameter previous: previous refresh state
      - parameter newState: new refresh state
-    */
+     */
     func refreshStateChanged(previous: RefreshState, newState: RefreshState)
 }
 
@@ -65,7 +65,7 @@ public extension Refresh {
     
     /**
      Set up a custom refresh view and handler.
-    */
+     */
     @discardableResult
     func setup(view: CustomRefreshView,
                handler: @escaping () -> Void) -> Self {
@@ -76,14 +76,14 @@ public extension Refresh {
     
     /**
      Immediately trigger the refresh state.
-    */
+     */
     func beginRefreshing() {
         refreshState = .refreshing
     }
     
     /**
      End the refresh state.
-    */
+     */
     func endRefreshing() {
         refreshState = .initial
     }
@@ -102,7 +102,7 @@ public enum RefreshState {
     
     /// refreshing and load the data.
     case refreshing
-
+    
 }
 
 public class Refresh: Observer {
@@ -152,8 +152,8 @@ public class Refresh: Observer {
     /// The absolute position of the refresh view in scrollview.
     var viewFrame: CGRect {
         guard let maxW = scrollView?.bounds.width,
-            let view = view else {
-                return .zero
+              let view = view else {
+            return .zero
         }
         guard let insets = custom?.refreshInsets else {
             return CGRect(
@@ -187,14 +187,14 @@ public class Refresh: Observer {
 extension Refresh {
     
     func refreshStateChanged(previous: RefreshState, newState: RefreshState) {
-
+        
         guard let scrollView = scrollView, let view = view else {
             return
         }
         
         if case .initial = previous {
             
-            observerState.insets.top = scrollView.insets.top
+            observerState.insets = scrollView.insets
             
             if view.superview == nil {
                 
@@ -225,10 +225,10 @@ extension Refresh {
                     withDuration: 0.25,
                     animations: {
                         scrollView.insets.top = self.observerState.insets.top
-                    },
+                },
                     completion: {
                         if $0 { view.isHidden = true }
-                    }
+                }
                 )
             }
         }
@@ -283,7 +283,7 @@ extension Refresh: ObserverDelegate {
             }
         }
     }
-
+    
 }
 
 // MARK: - Equatable
