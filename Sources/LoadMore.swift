@@ -246,13 +246,13 @@ extension LoadMore: ObserverDelegate {
     func observerStateChanged(previous: Observer.ObserverState,
                               newState: Observer.ObserverState) {
         
-        guard newState.size.height > 0 else {
+        guard let scrollView = scrollView, newState.size.height > 0 else {
             return
         }
         
         if loadMoreState == .initial {
             if previous.offset != newState.offset {
-                if fraction - (custom?.preload ?? 0) <= 0 {
+                if fraction - (custom?.preload ?? 0) <= 0 && scrollView.dataCount > 0 {
                     loadMoreState = .refreshing
                 }
             }

@@ -51,6 +51,22 @@ public extension UIScrollView {
 
 extension UIScrollView {
     
+    var dataCount: Int {
+        var count = 0
+        
+        if let tableView = self as? UITableView {
+            for section in 0 ..< tableView.numberOfSections {
+                count += tableView.numberOfRows(inSection: section)
+            }
+        } else if let collectionView = self as? UICollectionView {
+            for section in 0 ..< collectionView.numberOfSections {
+                count += collectionView.numberOfItems(inSection: section)
+            }
+        }
+
+        return count
+    }
+    
     var insets: Insets {
         get { return self.contentInset }
         set { self.contentInset = newValue }
