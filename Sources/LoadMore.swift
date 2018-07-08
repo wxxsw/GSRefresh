@@ -234,6 +234,13 @@ extension LoadMore {
             }
         }
         
+        if case .noMore = newState {
+            
+            if custom?.isVisibleNoMore == true, scrollView.dataCount == 0 {
+                view.isHidden = true
+            }
+        }
+        
         custom?.loadMoreStateChanged(previous: previous, newState: newState)
     }
     
