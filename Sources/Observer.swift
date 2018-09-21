@@ -85,7 +85,8 @@ public class Observer: UIView {
     public override func willMove(toWindow newWindow: UIWindow?) {
         if newWindow == nil {
             stopObserver()
-            handler = nil
+        } else {
+            startObserver()
         }
     }
     
@@ -142,7 +143,7 @@ public class Observer: UIView {
 private extension Observer {
     
     func startObserver() {
-        stopObserver()
+        guard !observerState.isObserving else { return }
         
         scrollView?.addObserver(self, forKeyPath: KeyPath.contentOffset, options: [.new], context: nil)
         scrollView?.addObserver(self, forKeyPath: KeyPath.contentSize, options: [.new], context: nil)
