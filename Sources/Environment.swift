@@ -28,7 +28,7 @@
 typealias Insets = UIEdgeInsets
 typealias Offset = CGPoint
 typealias Size = CGSize
-typealias DragState = UIGestureRecognizerState
+typealias DragState = UIGestureRecognizer.State
 
 extension Insets {
     var horizontal: CGFloat { return left + right }
