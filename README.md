@@ -1,12 +1,12 @@
 ![GSRefresh](https://github.com/wxxsw/GSRefresh/blob/master/ScreenShots/logo.png)
 
 <p align="center">
-<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/language-swift4-f48041.svg?style=flat"></a>
+<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/language-swift4.2-f48041.svg?style=flat"></a>
 <a href="https://developer.apple.com/ios"><img src="https://img.shields.io/badge/platform-iOS%208%2B-blue.svg?style=flat"></a>
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
 <a href="http://cocoadocs.org/docsets/GSRefresh"><img src="https://img.shields.io/badge/Cocoapods-compatible-4BC51D.svg?style=flat"></a>
 <a href="https://github.com/wxxsw/GSRefresh/blob/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat"></a>
-<a href="https://github.com/wxxsw/GSRefresh/tree/0.4.7"><img src="https://img.shields.io/badge/release-0.4.7-blue.svg"></a>
+<a href="https://github.com/wxxsw/GSRefresh/tree/0.5.0"><img src="https://img.shields.io/badge/release-0.5.0-blue.svg"></a>
 </p>
 
 <!--## Demo
@@ -146,7 +146,12 @@ scrollView.loadMore.setup(view: someView) {
 ### Master
 
 - iOS 8.0+
-- Xcode 9.x (Swift 4.x)
+- Xcode 10 (Swift 4.2)
+
+### [0.4.7](https://github.com/wxxsw/GSRefresh/tree/0.4.7)
+
+- iOS 8.0+
+- Xcode 9.x (Swift 4)
 
 ### [0.3.0](https://github.com/wxxsw/GSRefresh/tree/0.3.0)
 

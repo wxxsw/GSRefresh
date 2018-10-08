@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "GSRefresh"
-  s.version      = "0.4.7"
+  s.version      = "0.5.0"
   s.summary      = "Fully customizable drop-down refresh and load more."
 
   s.homepage     = "https://github.com/wxxsw/GSRefresh"
@@ -15,4 +15,6 @@ Pod::Spec.new do |s|
   # s.exclude_files = "Classes/Exclude
 
   s.requires_arc = true
+
+  s.swift_version = "4.2"
 end
