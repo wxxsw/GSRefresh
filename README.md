@@ -6,7 +6,7 @@
 <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
 <a href="http://cocoadocs.org/docsets/GSRefresh"><img src="https://img.shields.io/badge/Cocoapods-compatible-4BC51D.svg?style=flat"></a>
 <a href="https://github.com/wxxsw/GSRefresh/blob/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat"></a>
-<a href="https://github.com/wxxsw/GSRefresh/tree/0.5.0"><img src="https://img.shields.io/badge/release-0.5.0-blue.svg"></a>
+<a href="https://github.com/wxxsw/GSRefresh/tree/0.5.1"><img src="https://img.shields.io/badge/release-0.5.1-blue.svg"></a>
 </p>
 
 <!--## Demo
@@ -113,6 +113,10 @@ extension SomeView: CustomLoadMore {
     /// @optional, default is true.
     /// When there is no more data, is it necessary to keep the height of the custom view? If it is false, it will not be displayed.
     var isVisibleNoMore: Bool { get }
+
+    /// @optional, default is true.
+    /// Whether to send a request only once per drag. If it is false, it will be called continuously when the offset changes.
+    var isOnlyRefreshPerDrag: Bool { get }
     
     /// @optional, default is .zero.
     /// -top: increase the distance from scrollview.
