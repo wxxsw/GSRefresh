@@ -39,6 +39,10 @@ public protocol CustomLoadMore {
     /// When there is no more data, is it necessary to keep the height of the custom view? If it is false, it will not be displayed.
     var isVisibleNoMore: Bool { get }
     
+    /// @optional, default is true.
+    /// Whether to send a request only once per drag. If it is false, it will be called continuously when the offset changes.
+    var isOnlyRefreshPerDrag: Bool { get }
+    
     /// @optional, default is .zero.
     /// -top: increase the distance from scrollview.
     /// -left and right: set the horizontal offset.
@@ -60,6 +64,7 @@ public extension CustomLoadMore {
     /// Default value
     var preload: CGFloat { return 0 }
     var isVisibleNoMore: Bool { return true }
+    var isOnlyRefreshPerDrag: Bool { return true }
     var loadMoreInsets: UIEdgeInsets { return .zero }
     
 }
@@ -132,6 +137,8 @@ public class LoadMore: Observer {
             }
         }
     }
+    
+    private var oneNewPan: Bool = false
     
     // MARK: Helper Properties
     
@@ -257,8 +264,14 @@ extension LoadMore: ObserverDelegate {
             return
         }
         
+        if newState.dragState == .began {
+            oneNewPan = true
+        }
+        
         if loadMoreState == .initial {
             if previous.offset != newState.offset {
+                if custom?.isOnlyRefreshPerDrag == true, oneNewPan == false { return }
+                oneNewPan = false
                 if fraction - (custom?.preload ?? 0) <= 0 && scrollView.dataCount > 0 {
                     loadMoreState = .refreshing
                 }
