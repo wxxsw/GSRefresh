@@ -270,9 +270,9 @@ extension LoadMore: ObserverDelegate {
         
         if loadMoreState == .initial {
             if previous.offset != newState.offset {
-                if custom?.isOnlyRefreshPerDrag == true, oneNewPan == false { return }
-                oneNewPan = false
                 if fraction - (custom?.preload ?? 0) <= 0 && scrollView.dataCount > 0 {
+                    if custom?.isOnlyRefreshPerDrag == true, oneNewPan == false { return }
+                    oneNewPan = false
                     loadMoreState = .refreshing
                 }
             }
