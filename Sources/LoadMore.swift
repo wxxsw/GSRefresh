@@ -210,14 +210,11 @@ extension LoadMore {
             if newState == .refreshing ||
               (newState == .noMore && custom?.isVisibleNoMore == true) {
                 
-                observerState.insets = scrollView.insets
-                
-                scrollView.insets.bottom += outside.height
-                
+                if view.isHidden { observerState.insets = scrollView.insets }
                 if view.superview == nil { scrollView.addSubview(view) }
                 
                 view.frame = viewFrame
-                view.isHidden = false
+                set(hidden: false)
             }
             
             if case .refreshing = newState {
@@ -226,25 +223,23 @@ extension LoadMore {
         }
         
         if case .initial = newState {
-            
-            view.isHidden = true
-            scrollView.insets.bottom = observerState.insets.bottom
+            set(hidden: true)
         }
         
         if case .refreshing = previous, newState == .noMore {
             
             if custom?.isVisibleNoMore == true {
                 view.frame = viewFrame
+                set(hidden: false)
             } else {
-                view.isHidden = true
-                scrollView.insets.bottom = observerState.insets.bottom
+                set(hidden: true)
             }
         }
         
         if case .noMore = newState {
             
             if custom?.isVisibleNoMore == true, scrollView.dataCount == 0 {
-                view.isHidden = true
+                set(hidden: true)
             }
         }
         
@@ -281,6 +276,18 @@ extension LoadMore: ObserverDelegate {
         if previous.size != newState.size {
             view?.frame = viewFrame
         }
+    }
+    
+}
+
+// MARK: - Private
+
+private extension LoadMore {
+    
+    func set(hidden: Bool) {
+        guard let view = view, view.isHidden != hidden else { return }
+        scrollView?.insets.bottom += hidden ? -outside.height : outside.height
+        view.isHidden = hidden
     }
     
 }

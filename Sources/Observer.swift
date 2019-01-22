@@ -54,6 +54,7 @@ public class Observer: UIView {
     
     var view: UIView? {
         didSet {
+            view?.isHidden = true
             view != nil ? startObserver() : stopObserver()
         }
     }

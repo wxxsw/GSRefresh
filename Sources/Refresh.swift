@@ -199,7 +199,7 @@ extension Refresh {
             if view.superview == nil {
                 
                 view.frame = viewFrame
-                
+                view.isHidden = false
                 scrollView.addSubview(view)
                 
             } else {
