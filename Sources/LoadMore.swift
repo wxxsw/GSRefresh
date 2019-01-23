@@ -25,7 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-import Foundation
+import UIKit
 
 public typealias CustomLoadMoreView = CustomLoadMore & UIView
 
@@ -190,7 +190,7 @@ public class LoadMore: Observer {
     
     /// The fraction for refreshing.
     var fraction: CGFloat {
-        return (topside - observerState.offset.y) / (scrollView?.bounds.height ?? 0) - 1
+        return (topside + outside.height - observerState.offset.y) / (scrollView?.bounds.height ?? 1) - 1
     }
     
 }
@@ -208,12 +208,11 @@ extension LoadMore {
         if case .initial = previous {
             
             if newState == .refreshing ||
-              (newState == .noMore && custom?.isVisibleNoMore == true) {
+                (newState == .noMore && custom?.isVisibleNoMore == true) {
                 
                 if view.isHidden { observerState.insets = scrollView.insets }
                 if view.superview == nil { scrollView.addSubview(view) }
                 
-                view.frame = viewFrame
                 set(hidden: false)
             }
             
@@ -222,25 +221,8 @@ extension LoadMore {
             }
         }
         
-        if case .initial = newState {
-            set(hidden: true)
-        }
-        
-        if case .refreshing = previous, newState == .noMore {
-            
-            if custom?.isVisibleNoMore == true {
-                view.frame = viewFrame
-                set(hidden: false)
-            } else {
-                set(hidden: true)
-            }
-        }
-        
         if case .noMore = newState {
-            
-            if custom?.isVisibleNoMore == true, scrollView.dataCount == 0 {
-                set(hidden: true)
-            }
+            set(hidden: custom?.isVisibleNoMore != true || scrollView.dataCount == 0)
         }
         
         custom?.loadMoreStateChanged(previous: previous, newState: newState)
@@ -288,6 +270,7 @@ private extension LoadMore {
         guard let view = view, view.isHidden != hidden else { return }
         scrollView?.insets.bottom += hidden ? -outside.height : outside.height
         view.isHidden = hidden
+        if !hidden { view.frame = viewFrame }
     }
     
 }
