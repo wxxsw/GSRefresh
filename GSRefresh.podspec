@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "GSRefresh"
-  s.version      = "0.5.1"
+  s.version      = "0.5.2"
   s.summary      = "Fully customizable drop-down refresh and load more."
 
   s.homepage     = "https://github.com/wxxsw/GSRefresh"
