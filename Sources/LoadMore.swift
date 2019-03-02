@@ -246,7 +246,7 @@ extension LoadMore: ObserverDelegate {
         }
         
         if loadMoreState == .initial {
-            if newState.offset.y > 0, previous.offset != newState.offset {
+            if newState.offset.y > 0, previous.offset.y < newState.offset.y {
                 if fraction - (custom?.preload ?? 0) <= 0 && scrollView.dataCount > 0 {
                     if custom?.isOnlyRefreshPerDrag == true, oneNewPan == false { return }
                     oneNewPan = false
