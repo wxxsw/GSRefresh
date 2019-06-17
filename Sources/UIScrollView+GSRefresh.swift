@@ -29,7 +29,7 @@ import UIKit
 
 public extension UIScrollView {
     
-    public var refresh: Refresh {
+    var refresh: Refresh {
         guard let refresh = objc_getAssociatedObject(self, &refreshKey) as? Refresh else {
             let newRefresh = Refresh(scrollView: self)
             objc_setAssociatedObject(self, &refreshKey, newRefresh, .OBJC_ASSOCIATION_RETAIN)
@@ -38,7 +38,7 @@ public extension UIScrollView {
         return refresh
     }
     
-    public var loadMore: LoadMore {
+    var loadMore: LoadMore {
         guard let loadMore = objc_getAssociatedObject(self, &loadMoreKey) as? LoadMore else {
             let newLoadMore = LoadMore(scrollView: self)
             objc_setAssociatedObject(self, &loadMoreKey, newLoadMore, .OBJC_ASSOCIATION_RETAIN)
