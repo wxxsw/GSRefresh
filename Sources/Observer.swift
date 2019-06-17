@@ -70,6 +70,8 @@ public class Observer: UIView {
                                       newState: observerState)
         }
     }
+    
+    private var pan: UIPanGestureRecognizer?
 
     // MARK: Initialization
 
@@ -83,6 +85,10 @@ public class Observer: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        handler = nil
+    }
+    
     public override func willMove(toWindow newWindow: UIWindow?) {
         if newWindow == nil {
             stopObserver()
@@ -94,7 +100,6 @@ public class Observer: UIView {
     public override func willMove(toSuperview newSuperview: UIView?) {
         if newSuperview == nil {
             stopObserver()
-            handler = nil
         }
     }
     
@@ -145,20 +150,24 @@ private extension Observer {
     
     func startObserver() {
         guard !observerState.isObserving else { return }
+        observerState.isObserving = true
         
         scrollView?.addObserver(self, forKeyPath: KeyPath.contentOffset, options: [.new], context: nil)
         scrollView?.addObserver(self, forKeyPath: KeyPath.contentSize, options: [.new], context: nil)
-        scrollView?.panGestureRecognizer.addObserver(self, forKeyPath: KeyPath.state, options: [.new], context: nil)
-        observerState.isObserving = true
+        
+        pan = scrollView?.panGestureRecognizer
+        pan?.addObserver(self, forKeyPath: KeyPath.state, options: [.new], context: nil)
     }
     
     func stopObserver() {
         guard observerState.isObserving else { return }
+        observerState.isObserving = false
         
         scrollView?.removeObserver(self, forKeyPath: KeyPath.contentOffset)
         scrollView?.removeObserver(self, forKeyPath: KeyPath.contentSize)
-        scrollView?.panGestureRecognizer.removeObserver(self, forKeyPath: KeyPath.state)
-        observerState.isObserving = false
+        
+        pan?.removeObserver(self, forKeyPath: KeyPath.state)
+        pan = nil
     }
 
 }

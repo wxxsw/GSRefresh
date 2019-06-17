@@ -47,8 +47,8 @@ class TableViewController: UITableViewController {
 
         }
         
-        tableView.refresh.setup(view: refreshView) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+        tableView.refresh.setup(view: refreshView) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 guard let this = self else { return }
                 
                 this.count = 30
@@ -58,8 +58,8 @@ class TableViewController: UITableViewController {
             }
         }
         
-        tableView.loadMore.setup(view: loadMoreView) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+        tableView.loadMore.setup(view: loadMoreView) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 guard let this = self else { return }
                 
                 this.count += 30
