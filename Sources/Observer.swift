@@ -50,7 +50,7 @@ public class Observer: UIView {
     
     // MARK: Properties
     
-    weak var scrollView: UIScrollView?
+    var scrollView: UIScrollView? { return superview as? UIScrollView }
     
     var view: UIView? {
         didSet {
@@ -76,7 +76,6 @@ public class Observer: UIView {
     // MARK: Initialization
 
     init(scrollView: UIScrollView) {
-        self.scrollView = scrollView
         super.init(frame: .zero)
         scrollView.addSubview(self)
     }
@@ -89,17 +88,19 @@ public class Observer: UIView {
         handler = nil
     }
     
-    public override func willMove(toWindow newWindow: UIWindow?) {
-        if newWindow == nil {
+    public override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        
+        if newSuperview == nil, superview is UIScrollView {
             stopObserver()
-        } else {
-            startObserver()
         }
     }
     
-    public override func willMove(toSuperview newSuperview: UIView?) {
-        if newSuperview == nil {
-            stopObserver()
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        if superview is UIScrollView {
+            startObserver()
         }
     }
     
